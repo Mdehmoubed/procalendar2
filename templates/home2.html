@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    </head>
+  </body >
+  <nav class="navbar navbar-expand-md bg-primary navbar-dark">
+    <!-- Brand -->
+    <span class="navbar-brand " style="font-size: 40px; color:red"><strong>ProCalendar</strong></span>
+  
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mehr">
+      <span class="navbar-toggler-icon bg-primary"></span>
+    </button>
+  
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="mehr">
+      <ul class="navbar-nav ml-auto" style="font-size: 25px; ">
+        <li class="nav-item"><a class="nav-link" id="signup" ><i class="fas fa-user"></i> Sign Up</a> </li>
+        <li class="nav-item "><a class="nav-link " id="logi"><i class="fas fa-sign-in-alt"></i> LogIn</a></li>
+      </ul>
+    </div>
+  </nav>
+
+    
+        
+      
+    
+    <div class="container-fluid pt-5 " >
+      <div class="row">        
+        <div class="col-1 offset-4 " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
+        <div class="col-2 " id= 'cal_header' ><h2>March 2021</h2></div>
+        <div class="col-1 " ><h1 id='backword'><i class="fas fa-arrow-down"></i></h1></div>
+      </div>
+        <!-- row1 -->
+      
+
+
+
+        <div class='row text-center 'style="height: 40px; font-size:25px"> 
+        <div class="col-1 offset-2  border-dark border-top border-left text-truncate " >SUNDAY</div>
+        <div class="col-1 border-dark border-top border-left text-truncate " >MONDAY</div>
+        <div class="col-1 border-dark border-top border-left text-truncate " >TUESDAY</div>
+        <div class="col-1 border-dark border-top border-left text-truncate" >WEDNESDAY</div>
+        <div class="col-1 border-dark border-top border-left text-truncate" >THURSDAY</div>
+        <div class="col-1 border-dark border-top border-left text-truncate" >FRIDAY</div>
+        <div class="col-1 border border-dark border-bottom-0 text-truncate" >SATURDAY</div>
+        </div>
+
+        
+        <div class='row'style="height: 130px; font-size:25px" name='mid' > 
+        <div class="col-1 offset-2  border-dark border-top border-left text-truncate">
+            <div name='head' ></div><div name='event'></div></div>
+        <div class="col-1 border-dark border-top border-left text-truncate ">
+          <div name='head' ></div><div name='event'></div></div>
+        <div class="col-1 border-dark border-top border-left text-truncate ">
+            <div name='head' ></div><div name='event'></div></div>
+        <div class="col-1 border-dark border-top border-left text-truncate ">
+            <div name='head' ></div><div name='event'></div></div>
+        <div class="col-1 border-dark border-top border-left text-truncate ">
+            <div name='head' ></div><div name='event'></div></div>
+        <div class="col-1 border-dark border-top border-left text-truncate ">
+            <div name='head' ></div><div name='event'></div></div>
+        <div class="col-1 border border-dark border-bottom-0 text-truncate">
+            <div name='head' ></div><div name='event'></div></div>
+        </div>  
+
+        <div class='row'style="height: 130px; font-size:25px" name='mid' > 
+          <div class="col-1 offset-2  border-dark border-top border-left text-truncate">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border-dark border-top border-left text-truncate ">
+            <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border-dark border-top border-left text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border-dark border-top border-left text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border-dark border-top border-left text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border-dark border-top border-left text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border border-dark border-bottom-0 text-truncate">
+              <div name='head' ></div><div name='event'></div></div>
+          </div>  
+          <div class='row'style="height: 130px; font-size:25px" name='mid' > 
+            <div class="col-1 offset-2  border-dark border-top border-left text-truncate">
+                <div name='head' ></div><div name='event'></div></div>
+            <div class="col-1 border-dark border-top border-left text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+            <div class="col-1 border-dark border-top border-left text-truncate ">
+                <div name='head' ></div><div name='event'></div></div>
+            <div class="col-1 border-dark border-top border-left text-truncate ">
+                <div name='head' ></div><div name='event'></div></div>
+            <div class="col-1 border-dark border-top border-left text-truncate ">
+                <div name='head' ></div><div name='event'></div></div>
+            <div class="col-1 border-dark border-top border-left text-truncate ">
+                <div name='head' ></div><div name='event'></div></div>
+            <div class="col-1 border border-dark border-bottom-0 text-truncate">
+                <div name='head' ></div><div name='event'></div></div>
+            </div>
+
+        <div class='row'style="height: 130px; font-size:25px"  > 
+          <div class="col-1 offset-2 border border-dark border-right-0 text-truncate">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border border-dark border-right-0 text-truncate ">
+            <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border border-dark border-right-0  text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border border-dark border-right-0  text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border border-dark border-right-0  text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border border-dark border-right-0  text-truncate ">
+              <div name='head' ></div><div name='event'></div></div>
+          <div class="col-1 border border-dark  text-truncate">
+              <div name='head' ></div><div name='event'></div></div>
+          </div>  
+
+        
+     
+      
+
+    </div>  
+      
+        <!-- Modal -->
+        <div class="modal fade" id="mlogin" role="dialog">
+          <div class="modal-dialog">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header" style="padding:25px 30px;">
+                <h4><i class="fas fa-lock"></i> LogIn</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body" style="padding:40px 50px;">
+                <form role="form" action="{{url_for('logi')}}"  method="POST">
+                  <div class="form-group">
+                    <label for="usrname"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" class="form-control" id="uname" name='uname' minlength='5' placeholder="Enter email">
+                  </div>
+                  <div class="form-group">
+                    <label for="psw"><i class="fas fa-eye"></i> Password</label>
+                    <input type="password" class="form-control"  name='psw' placeholder="Enter password">
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox" value="" checked id= "rememberMe">Remember me</label>
+                  </div>
+                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-power-off"></i> Login</button>
+                </form>
+              </div>
+            </div>  
+          </div>
+        </div>
+    </div> 
+    
+    
+
+
+     <!-- Modal -->
+     <div class="modal fade" id="msignup" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:35px 50px;">
+            <h4><i class="fas fa-user-plus"></i> SignUp</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body" style="padding:40px 50px;">
+           
+            <form role='form' name='myForm'  onsubmit="return checkAll()" action="{{url_for('adduser')}}"  method="POST">
+              <div class="form-group">
+                <label for="usrname"><i class="fas fa-user"></i> Username</label>
+                <span hidden id='existUser' style='font-size: 11px; color:red'>Was taken </span>
+                <input id='uname' type="text" class= 'form-control' placeholder="Enter Username" name="uname" minlegth='5' required ">
+              </div>
+
+              <div class="form-group">
+                <label for="inputEmail"><span class="fas fa-envelope"></span> Email</label>
+                <span hidden id='existEmail' style='font-size: 11px; color:red'>this email has taken</span>
+                <input type="email" class= 'form-control' placeholder="Enter Email" name="iemail" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="psw"><span class="fas fa-eye"></span> Password</label>
+                <input type="password" class="form-control" id="psw" name='psw'  minlength="8" placeholder="Enter password">
+              </div>
+              
+              <div class="form-group">
+                <label for="psw"><span class="fas fa-eye"></span>Re Password</label>
+                <span hidden id='notsame' style='font-size: 11px; color:red'>are not same</span>
+                <input type="password" class="form-control" name='repsw'  minlength="8" placeholder="Re Enter password">
+              </div>
+                       
+             
+             
+              <div class="form-group">
+                <label for="inputFirstName"><b>First Name</b></label><br>
+                <input type="varchar" class="form-control" placeholder="Enter First Name" name="fname" required>
+              </div>  
+              <div class="form-group">
+                <label for="inputLastName"><b>Last Name</b></label>
+                <input type="varchar" class="form-control" placeholder="Enter Last Name" name="lname" required>
+              </div>
+  
+              <button type="submit" class="btn btn-success btn-block"><i class="fas fa-power-off"></i> Submit</button>
+             
+          </div>
+        </div>  
+      </div>
+    </div>
+
+
+
+  </body>
+        
+      <script>
+        $(document).ready(function(){
+          
+          $("#logi").click(function(){$("#mlogin").modal();})
+          
+          $("#signup").click(function(){$("#msignup").modal();})
+        
+          $('[name=uname]').blur(function(){checkUserName(this)})
+        
+          $('[name=repsw]').blur(function(){checkEqu(this)})
+           
+          $('[name=iemail]').blur(function(){checkInEmail(this)})
+        
+        });
+
+
+
+        var valid1 ,valid2 ,valid3
+        var email=''
+        var user=''
+        
+
+        function checkUserName(e){ 
+           user=e.value 
+           json_user=JSON.stringify({flag:'uname','uname':user}) 
+           $.post('/usercheck',{'checkReq':json_user},function(data){
+            valid1 = data.pass
+           if (!data.pass){$('#existUser').show("slow")}
+           else{$('#existUser').hide("slow") }
+
+            })
+        }
+
+        function checkInEmail(e){ 
+           email=e.value 
+           json_user=JSON.stringify({flag:'iemail',iemail:email}) 
+           $.post('/usercheck',{checkReq:json_user},function(data){
+            valid2=data.pass
+            if (!data.pass){$('#existEmail').show("slow") }
+            else{$('#existEmail').hide("slow") }
+
+            })
+        }
+        function checkEqu(e){
+           var m= $('#psw').val()
+           valid3=(e.value==m)
+           if(e.value != m){$('#notsame').show("slow") }
+           else{$('#notsame').hide("slow")} 
+        }
+        function checkAll(){
+            if (!(valid1 & valid2 & valid3)) {return false;}
+            var c=0
+            st=false
+            json_user=JSON.stringify({flag:'validemail',email:email,username:user}) 
+            var ajaxo={url:'/usercheck', type:'POST',success:function(){return},async:false }
+            ajaxo.data={checkReq:json_user};
+            ajaxo.success=function(r){c=prompt('Enter 6 digit activation code to complete your registration')};
+            $.ajax(ajaxo)
+            json_user=JSON.stringify({'flag':'rndcode','code':c})
+            ajaxo.data={checkReq:json_user};
+            ajaxo.success=function(r){st=r.pass}
+            $.ajax(ajaxo)
+            alert(st)
+            return st
+        }   
+                 
+       
+        </script>    
+    
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    </head>
+  </body >
+  <nav class="navbar navbar-expand-md bg-primary navbar-dark sticky-top">
+    <!-- Brand -->
+    <span class="navbar-brand " style="font-size: 30px; color:red"><strong>PR<i class="far fa-calendar"></i>Calendar</strong></span>
+  
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mehr">
+      <span class="navbar-toggler-icon bg-primary"></span>
+    </button>
+  
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="mehr">
+      <ul class="navbar-nav ml-auto" style="font-size: 25px; ">
+        <li class="nav-item "><a class="nav-link" id="signup" ><i class="fas fa-user"></i> Sign Up</a></li>
+        <li class="nav-item "><a class="nav-link " id="logi"><i class="fas fa-sign-in-alt"></i> LogIn</a></li>  
+      </ul>
+    </div>
+  </nav>
+
+    
+        
+      
+    
+    <div class="container-fluid pt-2 pl-5 " >
+      {% with messages = get_flashed_messages() %}
+	    {% if messages %}
+	      {% for message in messages %}
+		      <div class="alert alert-warning alert-dismissible" role="alert">
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			      {{message}}
+		      </div>
+		    {% endfor %}
+	    {% endif %}
+    	{% endwith %}
+
+
+      <div class="row text-center">        
+        <div class="col-1 offset-4 " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
+        <div class="col-2 " id= 'cal_header' ><h2></h2></div>
+        <div class="col-1 " ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
+      </div>
+
+          
+      
+      <div class='col-10 offset-1'>
+        <div class="row row-cols text-center  " style="height:60px;font-size:30px">
+          <div class="col m-1 border border-success rounded-circle text-truncate bg-success">SUNDAY </div>
+          <div class="col m-1 border border-success rounded-circle text-truncate bg-success">MONDAY </div>
+          <div class="col m-1 border border-success rounded-circle text-truncate bg-success">TUESDAY </div>
+          <div class="col m-1 border border-success rounded-circle text-truncate bg-success">WEDNESDAY </div>
+          <div class="col m-1 border border-success rounded-circle text-truncate bg-success">THURDAY </div>
+          <div class="col m-1 border border-success rounded-circle text-truncate bg-success">FRIDAY </div>
+          <div class="col m-1 border border-success rounded-circle text-truncate bg-success">SATURDAY </div>
+        </div>
+        <div class="row row-cols text-right  " style="height:120px;font-size:30px" name='row'>
+          <div class="col m-1 border  rounded text-truncate "><div name='head' ></div><div name='event'></div></div> 
+          <div class="col m-1 border  rounded text-truncate "><div name='head' ></div><div name='event'></div></div> 
+          <div class="col m-1 border  rounded text-truncate "><div name='head' ></div><div name='event'></div></div> 
+          <div class="col m-1 border  rounded text-truncate "><div name='head' ></div><div name='event'></div></div> 
+          <div class="col m-1 border  rounded text-truncate "><div name='head' ></div><div name='event'></div></div> 
+          <div class="col m-1 border  rounded text-truncate "><div name='head' ></div><div name='event'></div></div> 
+          <div class="col m-1 border  rounded text-truncate "><div name='head' ></div><div name='event'></div></div> 
+        </div>
+        
+
+
+
+      </div>  
+      
+
+
+       
+        
+        
+
+        
+     
+      
+
+    </div>  
+      
+        <!-- Modal -->
+        <div class="modal fade" id="mlogin" role="dialog">
+          <div class="modal-dialog">
+           <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header" style="padding:25px 30px;">
+                <h4><i class="fas fa-lock"></i> LogIn</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body" style="padding:40px 50px;">
+                <form role="form" id='lform' ></form>
+                  <div class="form-group">
+                    <label for="usrname"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" class="form-control" id='unameLog' minlength='5' placeholder="Enter Username">
+                  </div>
+                  <div class="form-group">
+                    <label for="psw"><i class="fas fa-eye"></i> Password</label>
+                    <input type="password" class="form-control"  id='pswLog' placeholder="Enter password">
+                  </div>
+                  <div class='row'>
+                    <div class="checkbox  col-6">
+                      <label ><input type="checkbox" value="" checked id= "rememberMe">Remember me</label>
+                    </div>
+                    <div class='col-6 text-primary' ><i  id='forgotten'> Forgotten password</i> </div>
+                  </div>  
+                  <div class="form-group">
+                    <i class='bg-warning' id='logMsg'></i>
+                  </div>
+                    <button onclick="login()" class="btn btn-success btn-block"><i class="fas fa-power-off"> Login </i></button>
+                </form>
+              </div>
+            </div>  
+          </div>
+        </div>
+
+   
+    
+    
+
+
+     <!-- Modal -->
+     <div class="modal fade" id="msignup" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:35px 50px;">
+            <h4><i class="fas fa-user-plus"></i> SignUp</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body" style="padding:40px 50px;">
+           
+            <form role='form' id='rform'  onsubmit="return checkAll()" action="{{url_for('adduser')}}"  method="POST">
+              <div class="form-group">
+                <label for="usrname"><i class="fas fa-user"></i> Username</label>
+                <span  id='existUser' class='bg-warning ' > Was taken !</span>
+                <input id='uname' type="text" class= 'form-control' placeholder="Enter Username" name="uname" minlegth='5' required ">
+              </div>
+
+              <div class="form-group">
+                <label for="inputEmail"><span class="fas fa-envelope"></span> Email</label>
+                <span  id='existEmail' class='bg-warning'> Was taken !</span>
+                <input type="email" class= 'form-control' placeholder="Enter Email" name="iemail" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="psw"><span class="fas fa-eye"></span> Password</label>
+                <input type="password" class="form-control" id="psw" name='psw'  minlength="8" required placeholder="Enter password">
+              </div>
+              
+              <div class="form-group">
+                <label for="psw"><span class="fas fa-eye"></span>Re Password</label>
+                <span  id='notsame' class='bg-warning'> Are not same !</span>
+                <input type="password" class="form-control" name='repsw'  minlength="8" required placeholder="Re Enter password">
+              </div>
+                       
+             
+             
+              <div class="form-group">
+                <label for="inputFirstName"><b>First Name</b></label><br>
+                <input type="varchar" class="form-control" placeholder="Enter First Name" name="fname" required>
+              </div>  
+              <div class="form-group">
+                <label for="inputLastName"><b>Last Name</b></label>
+                <input type="varchar" class="form-control" placeholder="Enter Last Name" name="lname" required>
+              </div>
+  
+              <button type="submit" class="btn btn-success btn-block"><i class="fas fa-power-off"></i> Submit</button>
+             
+          </div>
+        </div>  
+      </div>
+    </div>
+     <!-- Modal -->
+     <div class="modal fade" id="validation" role="dialog">
+      <div class="modal-dialog">
+       <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:25px 30px;">
+            <h4><i class="fas fa-lock"></i> Confirmation</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body" style="padding:40px 50px;">
+            <form role="form" id='lform' ></form>
+              <div class="form-group">
+
+                <label for="usrname"><i class="fas fa-user"></i> Please Enter six-digit activation code</label>
+                <input type="text" class="form-control" id='active-code' minlength='6' placeholder="Enter six-digit" required>
+              </div>
+              
+                <button onclick="activ()" class="btn btn-success btn-block"><i class="fas fa-power-off"> Confirm </i></button>
+            </form>
+          </div>
+        </div>  
+      </div>
+    </div>
+
+    
+
+
+
+  </body>
+        
+      <script>
+        var today= new Date(); 
+        var day =new Date(today.getTime() - (today.getTimezoneOffset() * 60000 )).toISOString().split('T')[0]
+        var month=today.getMonth();
+        var year=today.getFullYear();
+        var dayToV=today.getDate();
+        
+        $(document).ready(function(){                   
+          $("#logi").click(function(){$("#mlogin").modal();$('#logMsg').hide()});
+          $("#signup").click(function(){$("#msignup").modal();$('#existUser').hide(); $('#existEmail').hide();$('#notsame').hide()});
+          $('[name=uname]').blur(function(){checkUserName(this)})
+          $('[name=repsw]').blur(function(){checkEqu(this)})
+          $('[name=iemail]').blur(function(){checkInEmail(this)})
+          $("#backward").click(function(){back()})
+          $("#forward").click(function(){forward()})
+          view();
+        });
+
+
+
+        var valid1 ,valid2 ,valid3
+        var email=''
+        var user=''
+        
+
+        function checkUserName(e){ 
+           user=e.value 
+           json_user=JSON.stringify({flag:'uname','uname':user}) 
+           $.post('/usercheck',{'checkReq':json_user},function(data){
+            valid1 = data.pass
+           if (!data.pass){$('#existUser').show()}
+           else{$('#existUser').hide() }
+
+            })
+        }
+
+        function checkInEmail(e){ 
+           email=e.value 
+           json_user=JSON.stringify({flag:'iemail',iemail:email}) 
+           $.post('/usercheck',{checkReq:json_user},function(data){
+            valid2=data.pass
+            if (!data.pass){$('#existEmail').show() }
+            else{$('#existEmail').hide() }
+
+            })
+        }
+        function checkEqu(e){
+           var m= $('#psw').val()
+           valid3=(e.value==m)
+           if(e.value != m){$('#notsame').show() }
+           else{$('#notsame').hide()} 
+        }
+        function checkAll(){
+            if (!(valid1 & valid2 & valid3)) {return false;}
+            
+            st=false
+            json_user=JSON.stringify({flag:'validemail',email:email,username:user}) 
+            var ajaxo={url:'/usercheck', type:'POST',success:function(){return},async:false }
+            ajaxo.data={checkReq:json_user};
+            ajaxo.success=function(r){
+              //$('#validation').modal()
+
+              c=prompt('Enter 6 digit activation code to complete your registration')};
+            $.ajax(ajaxo)
+            json_user=JSON.stringify({'flag':'rndcode','code':c})
+            ajaxo.data={checkReq:json_user};
+            ajaxo.success=function(r){st=r.pass}
+            $.ajax(ajaxo)
+           
+            if (!st){window.location.href='/'}
+            return st
+        }   
+        function login(){
+          user=$('#unameLog').val()
+          password=$('#pswLog').val()
+          json_user=JSON.stringify ({flag:'login', 'uname':user,'pass':password}) 
+          $.post('/usercheck',{'checkReq':json_user},function(data){            
+           $('#logMsg').html(data.pass); $('#logMsg').show()
+            if ($('#logMsg').html()==''){window.location.href ="/dashboard"}
+            } )
+        } 
+
+        function view(){
+          var data={'dayToV':dayToV,'month':month+1 , 'year':year}
+          myJSON = JSON.stringify(data);
+          $.post("/default_calendar",{'data': myJSON},function(resp){
+          month_header=resp.data.month_header
+          day_header=resp.data.day_header
+          $('#cal_header').html('<h2>'+month_header+'</h2>')
+          m=$('[name="head"]').length
+          n=day_header.length
+          for(i=0 ; i<m-n ; i+=7){$('[name="row"]').eq(0).remove()}
+          for(i=0 ; i<n-m ; i+=7){$('[name="row"]').eq(0).before($('[name="row"]').eq(0).clone())}
+       
+                  
+        //put day_headers on proper positions       
+        for (i in day_header){
+            e=$('[name="head"]').eq(i)
+            e.html(day_header[i].name)
+            e.parent().attr('id',day_header[i].id)
+            if (day==day_header[i].id) {e.parent().css('background-color','aqua')}//for border of today
+            else {e.parent().css('background-color','white')}
+            if (day_header[i].cur == 'c'){e.css("color", "#111111"); continue} //current month color
+            if (day_header[i].cur == 'n'){e.css("color", "#7fbf7f")}  //previous and nex month color
+            else{e.css("color" ,"#7f7fbf")}
+        }
+               
+        
+    }) }
+
+    function forward(){
+        month ++
+        if (month>11){ month=0; year ++}
+        view() }
+
+    function back(){
+        month --
+        if (month<0){ month=11; year --}
+        view()   }
+        
+        
+
+
+
+
+       
+        </script>    
+    
+</html>

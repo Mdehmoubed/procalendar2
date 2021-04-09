@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html >
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+      <script> user={{user|tojson}}        
+    </script>  
+    <title>
+        PROCalendar
+    </title>    
+    </head>
+  </body  class='position-relative'>
+
+  <nav class="navbar navbar-expand-md bg-primary navbar-dark sticky-top">
+    <!-- Brand -->
+    <span class="navbar-brand " style="font-size: 30px; color:red"><strong>PR<i class="far fa-calendar"></i>Calendar</strong></span>
+  
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mehr">
+      <span class="navbar-toggler-icon bg-primary "></span>
+    </button>
+  
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="mehr">
+        <ul class="navbar-nav  " style="font-size: 25px; ">
+            
+            <li class="nav-item dropdown ">
+                <a class="nav-link  " id="userShow" data-toggle="dropdown"><i class="fas fa-user"></i>Hi... </a>
+                <div class="dropdown-menu bg-primary">
+                    <a class="dropdown-item" id="AccountChange">Edit Account <i class="fas fa-user-edit"></i></a>
+                    <a class="dropdown-item" id="setting1">Setting <i class="fas fa-cogs"></i></a>
+                    <a class="dropdown-item" id="logout1">LogOut <i class="fas fa-sign-out-alt"></i></a>                       
+                </div>
+            </li>  
+            <li class="nav-item dropdown ">
+                <a class="nav-link dropdown-toggle" id="viewShow" data-toggle="dropdown" > view</a>
+                <div class="dropdown-menu bg-primary">
+                    <a class="dropdown-item " name="view">Month <i class="far fa-calendar-alt"></i> </a>
+                    <a class="dropdown-item" name="view">Week <i class="fas fa-calendar-week"></i></a>
+                    <a class="dropdown-item" name="view">Day <i class="fas fa-calendar-day"></i></a> 
+                    <a class="dropdown-item" name="view">Year</a>                     
+                </div>
+            </li> 
+            <li class="nav-item  ">
+                <a class="nav-link " id='group1'>Groups</a>
+            </li> 
+
+            <li class="nav-item  ">
+                <a class="nav-link " id='event1'>Add Event</a>
+            </li> 
+            
+            
+        </ul>
+    </div>
+  </nav>
+     
+    
+    <div class="container-fluid pt-2 'position-relative' " >
+      {% with messages = get_flashed_messages() %}
+	    {% if messages %}
+	      {% for message in messages %}
+		      <div class="alert alert-warning alert-dismissible" role="alert">
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			      {{message}}
+		      </div>
+		    {% endfor %}
+	    {% endif %}
+      {% endwith %}
+   <!-- <div id="viewz" style="z-index: -1; height: 50px; width:50px; position:absolute; background-color: red; "></div> -->        
+    <div id='view' > 
+        <div id='WeekView'  >          
+            
+        
+            
+            
+            <div class='col-11 ' >
+                <div class="row justify-content-center " >   
+                    <h1 id='backward'><i class="fas fa-arrow-down"></i></h1> 
+                    <h1 id='forward' class='ml-4'><i class="fas fa-arrow-up"></i></h1>  
+                    <h2 id= 'cal_header'class='ml-4'>March 2021</h2>
+                    
+              </div>
+              <div class="row row-cols text-center  " style="height:60px;font-size:30px " id='weekD'>
+                <div class="col"> <div class='col-3 offset-9'></div>               </div>
+                <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+                <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+                <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+                <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+                <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+                <div class="col m-1 border border-success rounded-circle text-truncate bg-success" ></div>
+                <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+              </div>
+         
+              <div class="row row-cols " style="height:40px;font-size:20px; position: relative ;z-index:0" name='row'  >
+                <div class="col  text-right text-top "style="font-size:15px; position:relative; top: -10px;"name='timee' >00:00</div> 
+                <div class="col border  rounded "><div class='row row-cols' name='event'></div></div> 
+                <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+                <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+                <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+                <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+                <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+                <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+              </div>
+            </div>  
+        </div>            
+      
+    </div>   
+      
+        <!------------------------------- Modal setting---------------------------------------->
+        <div class="modal fade" id="msetting" role="dialog">
+            <div class="modal-dialog">
+             <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:25px 30px;">
+                  <h4><i class="fas fa-cogs"></i> Setting</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div id='startWeek'>
+                        <h4>Start of week</h4>
+                        <input type="radio" id="startWeek5" name="first_day" Value=5>
+                        <label for="startWeek5">Saturday</label>
+                        <input type="radio" id="startWeek6" name="first_day" Value=6 >
+                        <label for="startWeek6">Sunday</label>
+                        <input type="radio" id="startWeek0" name="first_day" Value=0>
+                        <label for="startWeek0">Monday</label>
+                    </div>
+                    <div id='timeSlot'>
+                        <h4>Time Slot</h4>
+                        <input type="radio" id="t15" name="timeInt"value=15>
+                        <label for="t15">15 Min</label>
+                        <input type="radio" id="t30" name="timeInt"value=30>
+                        <label for="t30">30 Min</label>
+                        <input type="radio" id="t60" name="timeInt" value=60>
+                        <label for="t60">1 hour</label>
+                    </div>
+
+                </div>
+               
+            </div>
+        </div>
+         
+        <!-------------- Modal group---------------------------------- -->
+        <div class="modal fade" id="mgroup" role="dialog">
+            <div class="modal-dialog">
+             <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:25px 30px;">
+                  <h4><i class="fas fa-object-group"></i> Groups</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="groups content" id=groupm>
+                        <div id = 'group-0' class='inline'>
+                            <input  name=g-show type="checkbox" onchange='changeshow(this)' >
+                            <input  name=g-pr-name type="text" disabled='true' value=""></input>
+                            <input  name=g-pr-color type=color  disabled='true'></input>
+                            <button name=g-bu-e onclick='editGroup(this)'class='bg-success'><i class="fas fa-edit"></i></button>
+                            <button name=g-bu-d onclick='delGroup(this)'class='bg-danger'><i class="fas fa-trash-alt"></i></button>
+                        </div>
+
+                        <div id='addGr'>
+                            <input id="addG-Name"type="text"  value=""></input>
+                            <input id="addG-Color"size=1 type='color' ></input>
+                            <button class='bg-success' id='addGroup' onclick='addGroup()'>Add New Group <i class="far fa-plus-square"></i></button>
+                            <button class='bg-warning' id='addG-Cancel' onclick='addGrCancel()'><i class="far fa-window-close"></i></button>
+                            <span style="color:red;"  id='addG-no'>fill name box</span>
+                        </div>
+                    </div>
+                </div>
+              </div>  
+            </div>
+        </div>
+
+
+          <!-------------- Modal Add Event---------------------------------- -->
+        <div class="modal fade" id="m_add_event" role="dialog">
+            <div class="modal-dialog">
+             <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:25px 30px;">
+                  <h4><i class="fas fa-calendar-plus"></i> Add Event</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <form role='form' id='addEventForm'>
+                        <div class ='form-group'>
+                            <label for="groups"><i class="fas fa-object-group"> Group</i>  </label>
+                            <select id="group_list" onchange="changroup(this)" name='groups'>
+                                <option id=grList-0></option>
+                            </select>
+                        </div>
+                        <div class ='form-group'>
+                            <label for="title"><i class="fas fa-signature"> Title </i> </label>
+                            <input type="text" id="title" name="title" >
+                        </div>
+                        <div class ='form-group'>
+                            <label for="date"><i class="fas fa-calendar"> Event Date </i> </label>
+                            <input type="date" id="date" name="date" >
+                        </div>
+                        <div class ='form-group' >
+                            <div class='float-left'id='eventT-s'>
+                                <label for="start"><i class="fas fa-clock"> Start Time </i></label>
+                                <select id="start" name="start" value='00:00' onchange="changeEnd(this)">
+                                    <option ></option>
+                                </select>  
+                            </div>
+                            
+                            <div class='float-right '>
+                                <label for="allDay"><i class="fas fa-sun">All Day</i></label>
+                                <input type="checkbox"  id= "allDay" onchange="allDayChange(this)">                              
+                            </div>
+                            <div class='float-non ' id='eventT-e'>
+                                <label for="end"><i class="fas fa-clock"> To </i></label>
+                                <select id="end" name="end"></select>
+                                                            
+                            </div>
+                        </div>
+                        <div class ='form-group'>
+                            <label for="reminder"><i class="fas fa-bell"> Reminder </i></label>
+                            <select id="reminder" name="reminder"  >
+                                <option ></option>
+                            </select> 
+                        </div>
+                        <div class ='form-group'>
+                            <label for="descr"><i class="fab fa-elementor">Description </i></label>
+                            <textarea id="descr" name="descr" rows="1" cols="25"></textarea>
+                        </div>
+                    </form>   
+                    <button onclick="checkEvent()" id="addEventBtn" class="btn btn-success btn-block"><i class="fas fa-calendar-plus"> Add Event </i></button>      
+                    
+
+                </div>
+              </div>  
+            </div>
+        </div>
+
+        <!-------------- Modal edit event---------------------------------- -->
+        <div class="modal fade" id="mdayEvent" role="dialog">
+            <div class="modal-dialog">
+             <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:25px 30px;">
+                  <h5><i class="fas fa-calendar-day" id= 'modalDate'></i> </h5>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="groups content" >
+                      <div id='mEvent' > 
+                        <div id='eventL-0'  class="row border mt-1 " data-toggle="collapse" data-target="#event-0"></div>
+                      </div>
+                      <button  id="adE" class="btn btn-success btn-block"><i class="fas fa-calendar-plus"> Add Event </i></button>    
+                    </div>
+                </div>
+            </div>             
+        </div>
+
+        <!-------------- Modal edit user---------------------------------- -->
+        <div class="modal fade" id="mdayEvent" role="dialog">
+            <div class="modal-dialog">
+             <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:25px 30px;">
+                  <h5><i class="fas fa-calendar-day" id= 'modalDate'></i> </h5>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="groups content" >
+                      <div id='mEvent' > 
+                        <div id='eventL-0'  class="row border mt-1 " data-toggle="collapse" data-target="#event-0"></div>
+                      </div>
+                      <button  id="adE" class="btn btn-success btn-block"><i class="fas fa-calendar-plus"> Add Event </i></button>    
+                    </div>
+                </div>
+            </div>             
+        </div>
+
+        
+      
+
+    
+  </body> 
+
+
+</html>
+
+
+
+
+
+
+<script>
+     $('[id |="addG"]').hide()
+        t1= new Date('06-24-2020');
+        var groups
+        var today= new Date();
+       
+        
+        var day =new Date(today.getTime() - (today.getTimezoneOffset() * 60000 )).toISOString().split('T')[0]
+        var month=today.getMonth();
+        var year=today.getFullYear();
+        var dayToV=today.getDate();
+        $("#userShow").text(user.fname)
+        
+                
+        $("[name='first_day']").click(function() {fd=parseInt(($(this).val()));user.firstDay=fd; setUser()});
+        $("[name='timeInt']").click(function() {ti=parseInt($(this).val());user.timeInterval=ti; setUser()});
+       
+
+        $(document).ready(function(){
+            $("#backward").click(function(){back()}) 
+            $("#forward").click(function(){forward()}) 
+            $("#logout1").click(function(){window.location.href='/logout'})
+            $('[name="view"]').click(function(){user.viewLy=$(this).text();
+                setUser();window.location.href ='/dashboard'}) ,
+            $('#setting1').click(function(){$('#msetting').modal();})
+            $('#group1').click(function(){$('#mgroup').modal()})
+            $('#event1').click(function(){$('#addEventForm')[0].reset();
+                $('[id |="eventT"]').attr('hidden',false);$('#m_add_event').modal();})
+            $('#adE').click(function(){addEventByD(this)}) 
+                    
+            view()
+        
+        })
+        function view(){
+            $('#viewShow').text(user.viewLy)          
+            var data={'viewLy':user.viewLy,'firstDay':user.firstDay,'timeInterval':user.timeInterval,'dayToV':dayToV,'month':month+1 , 'year':year}
+            myJSON = JSON.stringify(data);
+        $.post("/week_calendar",{'data': myJSON},function(resp){
+            user=resp.data.user
+            groups=resp.data.groups
+            head_cal_week=resp.data.head_cal_week
+            wekk=resp.data.wekk
+            time_header=resp.data.time_header
+            time_event=resp.data.time_event
+            $('#cal_header').html('<h2>'+head_cal_week+'</h2>')
+            for (i in wekk){
+                $('.col.m-1.border.border-success').eq(i).text(wekk[i].weekS)          
+            }
+        //adjust the number of rows to show
+       
+            m=$('[name="event"]').length
+            k=user.timeInterval
+            n=7*24*60/k
+        
+            for(i=0 ; i<m-n ; i+=7){$('[name="row"]').eq(0).remove()}
+            for(i=0 ; i<n-m ; i+=7){$('[name="row"]').eq(0).before($('[name="row"]').eq(0).clone())}   
+            
+            for (i in time_header){$('[name="timee"]').eq(i).text(time_header[i])
+           
+            }
+            for (i in time_event){
+                u=$('[name="event"]').eq(i); u.html('');u.parent().attr('id', wekk[i%7].id+' '+time_header[Math.floor(i/7)]); u.parent().removeClass('border-danger')  
+                for (j in time_event[i]){
+                    u.append('<div class="col text-truncate" style="background-color:'+time_event[i][j].color+'" name='+
+                    time_event[i][j].eventID+'>'+time_event[i][j].eventname+'</div>')                   
+                }
+            }          
+
+            
+
+       
+        a=today.getHours()
+        b=today.getMinutes()
+        b -=(b%k)
+        sa=a.toString().padStart(2,0)
+        sb=b.toString().padStart(2,0)
+        timeid=sa+':'+sb
+        ss1='[id="'+day+' ' +timeid+'"]'
+        $(ss1).addClass('border-danger')  
+       
+        viewCom()
+        
+    }) }
+
+    function forward(){
+        var a=today
+        a.setDate(a.getDate()+7)
+        month=a.getMonth()
+        year=a.getFullYear()
+        dayToV=a.getDate()
+        view()
+        }
+
+    function back(){
+        var a=today
+        a.setDate(a.getDate()-7)
+        month=a.getMonth()
+        year=a.getFullYear()
+        dayToV=a.getDate()
+        view()    }
+
+    function setUser(){
+        var send={'st':'save_user','user':user}
+        myJSON = JSON.stringify(send);
+        $.post( "/edit_group", {'id': myJSON},function(data){view()})
+        
+    } 
+    function delGroup(e){m=e.parentElement.id.slice(6,)
+        var send={'st':'delGr','id':m }
+        myJSON = JSON.stringify(send);
+        $.post( "/edit_group", {'id': myJSON},function(data){view()})
+    }
+    function changroup(a){for (i in groups){
+       if(groups[i].groupID==$(a).val()){
+           $(a).css('background-color',groups[i].color)}
+    }}
+    function changeshow(e){m=e.parentElement.id.slice(6,)
+        showG=e.checked;
+        var send={'st':'showChange','id':m ,'showG':showG }
+        myJSON = JSON.stringify(send);
+        $.post( "/edit_group", {'id': myJSON},function(data){view()})
+    }
+    
+    function allDayChange(a){b=a.parentElement.parentElement
+        $(b).find('[id |="eventT"]').attr('hidden',a.checked)
+        if (a.checked){
+            $(b).find('[id |="end"]').val('23:59')
+            $(b).find('[id |="start"]').val('00:00')}
+        else{
+            changeEnd($(b).find('[id |="start"]')[0])
+        }       
+    }
+    
+    function changeEnd(a){b=a.parentElement.parentElement
+        k=user.timeInterval          
+        $(b).find('[id |="end"]').html(''); et1=$('#start').children().eq(0).clone()
+        st= $(b).find('[id |="start"]').val()
+        t1.setHours(st.slice(0,2),st.slice(3,5),0,0)
+        h=parseInt(st.slice(0,2))*60+parseInt(st.slice(3,5))
+        //alert(i)
+        for (i=0 ;i<24*60-h-k;i+=k){
+            t1.setMinutes(t1.getMinutes()+k);p=t1.toTimeString().slice(0,5)
+            et1.html(p);et1.val(p); $(b).find('[id |="end"]').append(et1.clone()) }
+            et1.html('23:59');et1.val("23:59"); $(b).find('[id |="end"]').append(et1.clone()) 
+    }  
+
+    function checkEvent(){
+       var a= ($('#start').val()=="")||($('#end').val()=="")||($('#date').val()=="")||($('#title').val()=="")
+       //add some code to check overlaping time ,....
+       if (a) {alert ('some fild doesnt fill'); return}
+       $('#addEventBtn').prop('disabled',true);reminder=$('#reminder').val()
+       title=$('#title').val(); address=$('#descr').val() ; date=$('#date').val()
+       if (document.getElementById('allDay').checked){start='00:00';endt='23:59'}
+            else{start=$('#start').val(); endt=$('#end').val();}
+       groupID=$('#group_list').val()
+       var send={'st':'addEv','name':title , 'address':address ,'date':date ,'start':start,'endt':endt,'groupID':groupID,'reminder':reminder}
+           myJSON = JSON.stringify(send);
+           $.post( "/edit_event", {'id': myJSON},function(data){
+                $('#addEventBtn').prop('disabled',false)
+                $('#m_add_event').modal('hide')
+                view()  
+            })               
+    }
+    function addEventByD(a){
+        $("#mdayEvent").modal('hide')
+        $('#addEventForm')[0].reset();
+        $('[id |="eventT"]').attr('hidden',false);
+        $('#addEventForm').children().show()
+        $('#date').val(a.name)
+        $("#m_add_event").modal()
+
+    }
+
+    function delEvent(a){
+        var send={'st':'delEv','ido': a.parentElement.id.slice(7,)};
+        myJSON = JSON.stringify(send);
+           $.post( "/edit_event", {'id': myJSON},function(data){view()
+            $("#mdayEvent").modal('hide')
+            //$("#mdayEvent").modal()
+        })
+    }
+    function editEvent(a){p=a.parentElement.id ; pid=p.slice(7,)
+        if ($('#'+p).find('[id |="delEv"]').attr('disabled')){
+            title=$('#'+p).find('[id |="title"]').val();
+            groupID=$('#'+p).find('[id |="group_list"]').val();
+            date=$('#'+p).find('[id |="date"]').val();
+            a = $('#'+p).find('[id |="allDay"]').prop('checked')
+            if(a){start='00:00';endt='23:59'}
+            else{ start=$('#'+p).find('[id |="start"]').val();
+                    endt=$('#'+p).find('[id |="end"]').val();}
+            
+            reminder=$('#'+p).find('[id |="reminder"]').val();
+            address=$('#'+p).find('[id |="descr"]').val();
+            
+
+            if ((title)==''){alert ('some fild doesnt fill'); return}
+            $('#'+p).find('*').attr('disabled',true)
+            var send={'st':'editEv','ido': pid,'name':title , 'address':address ,'date':date ,'start':start,'endt':endt,'groupID':groupID,'reminder':reminder};
+            myJSON = JSON.stringify(send);
+            $.post( "/edit_event", {'id': myJSON},function(data){$("#mdayEvent").modal('hide'); view()})             
+        }        
+        else{
+        $('#'+p).find('*').attr('disabled',false)
+        $('#allDay-'+p).show()
+        $('#'+p).find('[id |="delEv"]').attr('disabled',true)
+        $('#'+p).find('[id |="editEv"]').html('<i class="fas fa-calendar-check"> Save Event </i>')
+        }
+    }
+    function dayEvents(day){ 
+        var send={'st':'dayEvents','day': day};
+        myJSON = JSON.stringify(send);
+           $.post( "/edit_event", {'id': myJSON},function(data){
+              $('#modalDate').text(" Events on "+data.day_data.day_head) 
+              event= data.day_data.day_event
+              a=$('#adE'); a.attr('name',data.day_data.day_id)
+              if (event.length ==0) {$('#mEvent').hide()}
+              else{
+                    $('#mEvent').show() 
+                    e=$('[id|="eventL"]').eq(0); $('[id|="eventL"]').remove();$('[id|="eventF"]').remove()
+                    ta=$('<div class="collapse" data-parent="#mEvent"></div>'); tb=$('#addEventForm')
+                    
+                    for (i in event ){
+                        eL=event[i]
+                        for ( j in groups){
+                            if (groups[j].groupID == eL.groupID){ gr=groups[j];break }
+                        }
+                        divi='eventL-'+eL.eventID.toString();divt='eventF-'+eL.eventID.toString();
+                        e=e.clone(); e.attr('id',divi); e.attr('data-target','#'+divt) 
+                        e.css('background-color',gr.color); 
+                        e.text(eL.eventname); $('#mEvent').append(e);
+
+                        t=ta.clone(); t.attr('id',divt); tc=tb.clone();tc.attr('id','fE-'+divt)
+                        a=tc.find('#group_list');a.attr('disabled',true);a.val(gr.groupID);a.css('background',gr.color);a.attr('id',a.attr('id')+'-'+divt)
+                        a=tc.find("#title");a.attr('disabled',true);a.attr('id',a.attr('id')+'-'+divt);a.val(eL.eventname)
+                        a=tc.find("#date");a.attr('disabled',true);a.attr('id',a.attr('id')+'-'+divt);a.val(eL.date)
+                        a=tc.find("#start");a.attr('disabled',true);a.attr('id',a.attr('id')+'-'+divt);a.val(eL.start)
+                        if (eL.endt=='23:59'){enn='00:00'}else{enn=eL.endt}
+                        a=tc.find("#end");a.attr('disabled',true);a.attr('id',a.attr('id')+'-'+divt);a.val(enn)
+                        a=tc.find('[id |= "eventT"]');a.attr('id',a.attr('id')+'-'+divt);
+                        a=tc.find("#allDay");a.attr('disabled',true);a.attr('id',a.attr('id')+'-'+divt);a.prop('checked',(enn=='00:00' &  eL.start =='00:00'))
+                        a=tc.find("#reminder");a.attr('disabled',true);a.attr('id',a.attr('id')+'-'+divt);a.val(eL.reminder)
+                        a=tc.find("#descr");a.attr('disabled',true);a.attr('id',a.attr('id')+'-'+divt);a.val(eL.address)
+                        t.append(tc)
+                        b='<button  id="delEv-'+eL.eventID+'" onclick="delEvent(this)"  class="btn btn-danger "><i class="fas fa-calendar-times"> Delete Event </i></button>'
+                        t.append(b);
+                        b='<button  id="editEv-'+eL.eventID+'"onclick="editEvent(this)" class="btn btn-warning float-right"><i class="fas fa-edit"> Edit Event </i></button>'
+                        t.append(b) 
+                                         
+                        
+                        $('#mEvent').append(t); 
+                        
+                    }
+                    
+                       
+              }    
+            
+            })   
+
+    }
+
+    
+    function addGroup(){
+        if ($('#addGroup').html()=='Add New Group <i class="far fa-plus-square"></i>'){
+            $('[name |="g-bu"]').hide()           
+            $('#addGroup').html('<i class="far fa-plus-square"></i>')
+            $('[id |="addG"]').show()
+            $('#addG-no').hide()
+        }
+        else{ 
+            if ($('#addG-Name').val()==""){$('#addG-no').show('slow') ;return}
+            gname=$('#addG-Name').val()
+            gcolor=$('#addG-Color').val()
+            var send={'st':'addGr','name':gname , 'color':gcolor }
+            myJSON = JSON.stringify(send);
+            $.post( "/edit_group", {'id': myJSON},function(data){ 
+                addGrCancel(); view()
+                })
+        }
+    }
+    function addGrCancel(){
+        $('[name |="g-bu"]').show();$('#addGroup').show() 
+        $('#addGroup').html('Add New Group <i class="far fa-plus-square"></i>')
+        $('[id |="addG"]').hide();
+        $('#addG-no').hide();
+           
+   }
+   
+   function editGroup(e){
+        m='#'+e.parentElement.id
+        eb=$(m +'>[name="g-bu-e"]')
+        if (eb.html()=='<i class="fas fa-edit"></i>'){
+            $('[name |="g-bu"]').hide();$('#addGroup').hide() 
+            eb.html('<i class="far fa-check-square"></i>'); eb.show();
+            $(m).children().attr('disabled',false)
+            $('[name=showG]').attr('disabled',true)          
+            }
+        else{   
+            if ($(m+'>[name="g-pr-name"]').val()==""){$('#addG-no').show();return}
+            gname=$(m+'>[name="g-pr-name"]').val()
+            gcolor=$(m+'>[name="g-pr-color"]').val()
+            groupID=e.parentElement.id.slice(6,)               
+            var send={'st':'editGr','name':gname , 'color':gcolor,'groupID':groupID }
+            myJSON = JSON.stringify(send);  
+            $.post( "/edit_group", {'id': myJSON},function(){
+                $(eb).html('<i class="fas fa-edit"></i>')
+                $(m).children().attr('disabled',false)
+                $(m +'>[name |="g-pr"]').attr('disabled',true)
+                eb.html('<i class="fas fa-edit"></i>')     
+                addGrCancel();view()  })
+        }       
+        return
+    }
+    function forTest(a){
+        alert(a.id+" ,left= "+ $(a).offset().left+',top='+ $(a).offset().top)
+        $('#viewz').css({'background-color':'red','width':'50px','height':'50px', 'z-index':'-100'})
+       
+
+    }
+    function viewCom(){
+        $('.col.border.rounded').off()         
+        $('.col.border.rounded').click(function(){forTest(this)})
+           
+
+         // making option for time slots
+        k=user.timeInterval
+        $('#start').html('<option>00:00</option>'); et1=$('#start').children().clone();$('#end').html('')
+        t1.setHours(0,0,0,0)
+        for (i=0 ;i<24*60;i+=k){
+            t1.setMinutes(t1.getMinutes()+k);p=t1.toTimeString().slice(0,5)
+            et1.html(p);et1.val(p);$('#start').append(et1.clone());$('#end').append(et1.clone())
+            }
+        $('#end').children().eq(-1).html('23:59')
+
+        //making options for reminder
+        var rem= ["Not Reminder","at time of Event","5 minute before","15 minute before","30 minute before" ,'1 hour before','2 hours before','1 Day before','1 Week before']
+        ind=$('#reminder')
+        ind.html('<option></option>');e=ind.children();ind.html('')
+        for (i in rem){
+            e.html(rem[i]);e.val(i)
+            ind.append(e.clone())
+            }
+
+        a='#startWeek > #startWeek'+user.firstDay.toString() 
+        $(a).prop('checked',true);
+        a='#timeSlot > #t'+user.timeInterval.toString() 
+        $(a).prop('checked',true);
+
+        //making group for list to add event and group-menu    
+        e=$('[id|="group"]').eq(0);  m=$('[id|="grList"]').eq(0); 
+        $('[id|="group"]').remove();   $('[id|="grList"]').remove()
+        for (i in groups){
+            gr=groups[i];
+            gop ='grList-'+gr.groupID.toString(); //group option list
+            gdiv ='group-'+ gr.groupID.toString(); //in group menu
+            e = e.clone(); e.attr('id',gdiv); e.children().eq(1).val(gr.name)
+            e.children().eq(2).val(gr.color); e.children().eq(0).prop("checked",gr.showG);
+            $('#addGr').before(e);
+            m = m.clone(); m.attr('id',gop);m.css('background-color',gr.color)
+            m.val(gr.groupID) ;m.html(gr.name); $('#group_list').append(m) 
+        }
+        
+        if (groups.length<2){ $('[name=delGroup]').hide()}
+        //$('#group_list').val(groups[0].name)
+        
+        $('#group_list').css('background-color',groups[0].color)
+        return
+    }
+
+
+
+
+
+</script>
