@@ -20,9 +20,9 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 ###this part for scheduler
 
-scheduler = APScheduler()# scheduler object for reminder email
-scheduler.init_app(app) # init it whit app
-scheduler.start() # start to work
+#scheduler = APScheduler()# scheduler object for reminder email
+#scheduler.init_app(app) # init it whit app
+#scheduler.start() # start to work
 
 
 ##### this part for email sender 
@@ -425,7 +425,7 @@ def edit_event():
     cur.execute("select * from event where username = ? and date = ? Order by date,start;",(session['username'],date1))
     events =cur.fetchall()
     #add_sch is not in proper place
-    add_sch(events,user)    
+    #add_sch(events,user)    
     con.close()
    
     d1 = date.fromisoformat(date1)
