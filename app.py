@@ -5,7 +5,7 @@ from threading import Thread
 import sqlite3 as sql
 from functools import wraps
 from datetime import date,time,datetime,timedelta
-import calendar
+import calendar_9
 import random
 import time
 
@@ -20,9 +20,9 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 ###this part for scheduler
 
-#scheduler = APScheduler()# scheduler object for reminder email
-#scheduler.init_app(app) # init it whit app
-#scheduler.start() # start to work
+scheduler = APScheduler()# scheduler object for reminder email
+scheduler.init_app(app) # init it whit app
+scheduler.start() # start to work
 
 
 ##### this part for email sender 
@@ -142,6 +142,7 @@ def checkuser():
         if  not (allPass):
             flash('Your registration faild!!!')
         return {'pass': allPass }
+  
     #logIn#############################################
     if checkReq['flag']=='login':   
         cur.row_factory= dict_factory
@@ -175,6 +176,7 @@ def defualt_calendar():
     pre_month=((month-2)%12)+1 
     day_header=[]
     for i in c.itermonthdays3(year,month):
+        print(i)
         k={}
         if i[1]==month:
             k['cur']='c'
@@ -346,21 +348,21 @@ def week_calendar():
 def calendName(firstDay):
     week_name={0:'MONDAY',1:'TUESDAY',2:'WEDNESDAY',3:'THURSDAY',4:'FRIDAY',5:'SATURDAY',6:'SUNDAY'}
     month_name=[]
-    for i in calendar.month_name:
+    for i in calendar_9.month_name:
         month_name.append(i)
 # month abbr 
     month_abbr=[]
-    for i in calendar.month_abbr:
+    for i in calendar_9.month_abbr:
         month_abbr.append(i)
 #this is first day of week 0=monday 6=sunday 5=saturday 
-    c=calendar.Calendar(firstweekday=firstDay)
+    c=calendar_9.Calendar(firstweekday=firstDay)
 #make proper week header (to make a list)
     week_header=[]
     for i in c.iterweekdays():
         week_header.append(week_name[i]) 
 #make week abbr
     week_abbr=[]
-    for i in calendar.day_abbr:
+    for i in calendar_9.day_abbr:
         week_abbr.append(i) 
     return week_header,week_abbr,month_name,month_abbr,c
 
@@ -425,7 +427,7 @@ def edit_event():
     cur.execute("select * from event where username = ? and date = ? Order by date,start;",(session['username'],date1))
     events =cur.fetchall()
     #add_sch is not in proper place
-    #add_sch(events,user)    
+    add_sch(events,user)    
     con.close()
    
     d1 = date.fromisoformat(date1)
