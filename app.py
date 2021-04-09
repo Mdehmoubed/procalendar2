@@ -176,7 +176,6 @@ def defualt_calendar():
     pre_month=((month-2)%12)+1 
     day_header=[]
     for i in c.itermonthdays3(year,month):
-        print(i)
         k={}
         if i[1]==month:
             k['cur']='c'
@@ -187,8 +186,6 @@ def defualt_calendar():
         k['name']= month_name[i[1]]+" 1" if i[2]==1 else i[2]
         k['id'] = date(i[0],i[1],i[2]).strftime('%Y-%m-%d')
         day_header.append(k)   
-   
-    #print (day_event)
     data={'month_header':month_header,'day_header':day_header}
 
     return {'data':data}
@@ -411,7 +408,7 @@ def edit_event():
         subjects='PRO-Calendar You Add an event'
         message_body= 'Hello '+fname+', \n You add an event to your pro_calendar.\n The detail is:\n EVENT NAME:\t'\
         +name+'\n ADDRESS:\t'+address+'\n Event Date:\t'+str(date1)+'\n Start Time:\t'+str(start)\
-        +'\n End Time:\t'+str(endt)+'\n \n Pro-claenar team'
+        +'\n End Time:\t'+str(endt)+'\n \n Pro-calendar team'
         send_email(email,message_body,subjects)
             
     if (jsd['st']=='delEv'):
@@ -469,11 +466,6 @@ def edit_group():
     if (jsd['st']=='save_user'):
         global user
         user=jsd['user']
-        #password=user['password']
-        #lname=user['lname']
-        #fname=user['fname']
-        #ViewSet=user['ViewSet']
-        #ViewSet=json.dumps(ViewSet)
         firstDay=user['firstDay']
         timeInterval=user['timeInterval']
         viewLy=user['viewLy']
