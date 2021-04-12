@@ -4,46 +4,43 @@
 
 
 {% block content %}
-   
-
+         
+<div id='WeekView' class='position-relative' >          
         
-    </div>
-    <!-- monthly layout, 7 columns, 7 rows -->
-    <div class="row calendar grid-container-1 ">
-        
-        <!-- row1 -->
-        <div class="day grid-col-1"></div>
-        <div class="day grid-col-2"></div>
-        <div class="day grid-col-3"></div>
-        <div class="day grid-col-4"></div>
-        <div class="day grid-col-5"></div>
-        <div class="day grid-col-6"></div>
-        <div class="day grid-col-7"></div>
-        <div class="day grid-col-8 last-col"></div>
-        <!-- /row1 -->
-       
-        <div class="grid-col-1"></div>
-            <div class="grid-col-2"></div>
-            <div class="grid-col-3"></div>
-            <div class="grid-col-4"></div>
-            <div class="grid-col-5"></div>
-            <div class="grid-col-6"></div>
-            <div class="grid-col-7"></div>
-            <div class="grid-col-8 last-col"></div>
-            <!-- /row2 -->
             
-            <!--row14 -->
-            <div class="grid-col-1 btm-row"></div>
-            <div class="grid-col-2 btm-row"></div>
-            <div class="grid-col-3 btm-row"></div>
-            <div class="grid-col-4 btm-row"></div>
-            <div class="grid-col-5 btm-row"></div>
-            <div class="grid-col-6 btm-row"></div>
-            <div class="grid-col-7 btm-row"></div>
-            <div class="grid-col-8 btm-row last-col"></div>
-        <!-- /row7 -->
-    </div>
-</div><!-- main -->
+    <div class='col-11 ' >
+       
+
+      <div class="row text-center  " css='z-index:10'>        
+        <div class="col-1 offset-2" ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
+        <div class="col-6 " id= 'cal_header' ><h2>March 2021</h2></div>
+        
+        <div class="col-1  " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
+      </div> 
+      <div class="row row-cols text-center  " style="height:60px;font-size:30px " id='weekD'>
+        <div class="col"> <div class='col-3 offset-9'></div>               </div>
+        <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+        <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+        <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+        <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+        <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+        <div class="col m-1 border border-success rounded-circle text-truncate bg-success" ></div>
+        <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
+      </div>
+ 
+      <div class="row row-cols " style="height:40px;font-size:20px; position: relative ;z-index:0" name='row'  >
+        <div class="col  text-right text-top "style="font-size:15px; position:relative; top: -10px;"name='timee' >00:00</div> 
+        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div> 
+        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
+      </div>
+    </div>  
+</div>            
+
 {% endblock %}
 {% block footer %}
 <script src="{{url_for('static', filename = 'weekly.js')}}"></script>

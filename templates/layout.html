@@ -3,105 +3,106 @@
 <head>
     {% block head %} {% endblock %}
 
-
-
-    <!--<title>{% block title %}{% endblock %} - My Webpage</title>-->
-    <title>Pro Calendar</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- <script src="{{url_for('static', filename = 'script.js')}}"></script>-->
-  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script> 
+    user={{user|tojson}}
+    groups={{groups|tojson}}             
+    </script> 
+    <title>
+        PROCalendar
+    </title>    
 </head>
-<body class="row body">
-    <div class="col-3 menu">
-        <div class="row menu-header">
-            <h2>Pro Calendar</h2>
-            <button>Close menu</button>
-        </div>
-        <!-- add event collapsible section -->
-        <button type="button" class="collapsible">Add Event</button>
-        <div class="add-event content">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" ><br>
-            <label for="date"  >Date:</label>
-            <input type="date" id="date" name="date" ><br>
-            <label for="start">START Time:</label>
-            <select id="start" name="start" value='00:00' onchange="changeEnd()">
-                <option ></option>
-            </select> <br>
-            <label for="end">End Time:</label>
-            <select id="end" name="end" value='00:00' ></select> <br>
-            <label for="group">Group:</label>
-            <select id="group_list" onchange="changroup()">
-                <option id=grList-0></option>
-            </select><br>
-            <label for="descr">Description:</label>
-            <textarea id="descr" name="descr" rows="5" cols="25"></textarea><br>
-            <label for="reminder">Reminder:</label>
-            <select id="reminder" name="reminder"  >
-                <option ></option>
-            </select> <br>
-
-            <input type="button" onclick="checkEvent()" value="Submit" id="addEventBtn">
-        </div>
-       
-        <!-- groups collapsible section -->
-        <button type="button" class="collapsible">Groups</button>
-        <div class="groups content" id=groupm>
-            <div id = 'group-0'>
-                <input name=showG type="checkbox" onchange='changeshow(this)' >
-                <input  name=nameG type="text" size= 18 disabled='true' value=""></input>
-                <input  name= colorG type=color  disabled='true'></input>
-                <button  name=delGroup onclick='delGroup(this)'>Del</button>
-                <button  name=edGroup onclick='editGroup(this)'>Edit</button>                
-            </div>
-            <div id='addGr'>
-                
-                <input id="addG-Name"size=10 type="text" hidden value=""></input>
-                <input id="addG-Color"size=1 type='color'hidden ></input>
-                <button  id='addGroup' onclick='addGroup()'>New Group</button>
-                <button id='addG-Cancel' hidden onclick='adcGrCancel()'>*</button>
-                <span style="color:red;font:6px" hidden id='noGroup'>fill name box</span>
-               
-                
-            </div>
+<nav class="navbar navbar-expand-md bg-primary navbar-dark sticky-top ">
+    <!-- Brand -->
+    <span class="navbar-brand " style="font-size: 30px; color:red"><strong>PR<i class="far fa-calendar"></i>Calendar</strong></span>
+  
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mehr">
+      <span class="navbar-toggler-icon bg-primary "></span>
+    </button>
+  
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="mehr">
+        <ul class="navbar-nav " style="font-size: 25px; ">
+            <li class="nav-item dropdown ml-1">
+                <a class="nav-link  dropdown-toggle"  data-toggle="dropdown"><i id="userShow" class="fas fa-user">Hi...</i>  </a>
+                <div class="dropdown-menu bg-primary">
+                    <a class="dropdown-item" id="AccountChange"><i class="fas fa-user-edit">Edit Account</i></a>
+                    <a class="dropdown-item" id="setting1"><i class="fas fa-cogs">Setting </i></a>
+                    <a class="dropdown-item" id="logout1"> <i class="fas fa-sign-out-alt">LogOut</i></a>                       
+                </div>
+            </li> 
+        </ul>
+        <ul class="navbar-nav ml-auto " style="font-size: 25px; "> 
             
-           
+            <li class="nav-item  ml-3">
+                <a class="nav-link " id='group1'>Groups</a>
+            </li> 
+
+            <li class="nav-item   ml-3">
+                <a class="nav-link " id='event1'>Add Event</a>
+            </li> 
+
+            <li class="nav-item dropdown ml-3 ">
+                <a class="nav-link dropdown-toggle" id="viewShow" data-toggle="dropdown" > view </a>
+                <div class="dropdown-menu bg-primary">
+                    <a class="dropdown-item " name="view"><i class="far fa-calendar-alt"> </i> Month</a>
+                    <a class="dropdown-item" name="view"> <i class="fas fa-calendar-week" > </i> Week</a>
+                    <a class="dropdown-item" name="view"> <i class="fas fa-calendar-day"> </i> Day</a>                                      
+                </div>
+            </li> 
+            
+            
+        </ul>
+    </div>
+  </nav>
+     
+    
+    <div class="container-fluid pt-2  " >
+      {% with messages = get_flashed_messages() %}
+	    {% if messages %}
+	      {% for message in messages %}
+		      <div class="alert alert-warning alert-dismissible" role="alert">
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			      {{message}}
+		      </div>
+		    {% endfor %}
+	    {% endif %}
+      {% endwith %}
+
+    <div id='view' > 
+
+    {% block content %}
+    {% endblock %}
+</div>             
+      
+   
+      
+<!------------------------------- Modal setting---------------------------------------->
+<div class="modal fade" id="msetting" role="dialog">
+    <div class="modal-dialog">
+     <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:25px 30px;">
+          <h4><i class="fas fa-cogs"></i> Setting</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <!-- settings collapsible section -->
-        <button type="button" class="collapsible">Settings</button>
-        <div class="settings content">
-            <!-- themes pop-up-->
-            <div>
-                <input type="radio" id="theme1" name="theme">
-                <label for="theme1">Theme 1</label>
-                <input type="radio" id="theme2" name="theme2">
-                <label for="theme2">Theme 2</label>
-                <input type="radio" id="theme3" name="theme3">
-                <label for="theme3">Theme 3</label>
-            </div>
-            <!-- start of week pop-up-->
+        <div class="modal-body" style="padding:40px 50px;">
             <div id='startWeek'>
-                <p>Start of week</p>
+                <h4>Start of week</h4>
                 <input type="radio" id="startWeek5" name="first_day" Value=5>
                 <label for="startWeek5">Saturday</label>
                 <input type="radio" id="startWeek6" name="first_day" Value=6 >
                 <label for="startWeek6">Sunday</label>
                 <input type="radio" id="startWeek0" name="first_day" Value=0>
                 <label for="startWeek0">Monday</label>
-                
             </div>
-            <!-- week numbers pop-up-->
-            <div>
-                <p>Show week numbers</p>
-                <input type="radio" id="num-wk-yes" name="num-wk-yes">
-                <label for="num-wk-yes">Yes</label>
-                <input type="radio" id="num-wk-no" name="num-wk-no">
-                <label for="num-wk-no">No</label>
-            </div>
-            <!-- time format pop-up-->
             <div id='timeSlot'>
-                <p>Time Slot</p>
+                <h4>Time Slot</h4>
                 <input type="radio" id="t15" name="timeInt"value=15>
                 <label for="t15">15 Min</label>
                 <input type="radio" id="t30" name="timeInt"value=30>
@@ -109,37 +110,185 @@
                 <input type="radio" id="t60" name="timeInt" value=60>
                 <label for="t60">1 hour</label>
             </div>
+
         </div>
-    </div> <!-- /menu -->
-    <div class="col-9 views">
-        <button id='day'onclick='viewCh(this)'>Day</button>
-        <button id='week'onclick='viewCh(this)'>Week</button>
-        <button id='month'onclick='viewCh(this)'>Month</button>
-        <button id='year'onclick='viewCh(this)'>Year</button>
-    </div>  
-    <div class="col-9 main">
-        <!-- calendar header -->
-        <div class="row calendar-header">
-            <div class="col-5 month">
-                <h1>January 2021</h1>
+      </div>  
+    </div>
+  </div>
+ 
+<!-------------- Modal group---------------------------------- -->
+<div class="modal fade" id="mgroup" role="dialog">
+    <div class="modal-dialog">
+     <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:25px 30px;">
+          <h4><i class="fas fa-object-group"></i> Groups</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body text-center">
+            <div class="groups content" id=groupm>
+                <div id = 'group-0' class='inline'>
+                    <input  name=g-show type="checkbox" onchange='changeshow(this)' >
+                    <input  name=g-pr-name type="text" disabled='true' value=""></input>
+                    <input  name=g-pr-color type=color  disabled='true'></input>
+                    <button name=g-bu-e onclick='editGroup(this)'class='bg-success'><i class="fas fa-edit"></i></button>
+                    <button name=g-bu-d onclick='delGroup(this)'class='bg-danger'><i class="fas fa-trash-alt"></i></button>
+                </div>
+
+                <div id='addGr'>
+                    <input id="addG-Name"type="text"  value=""></input>
+                    <input id="addG-Color"size=1 type='color' ></input>
+                    <button class='bg-success' id='addGroup' onclick='addGroup()'>Add New Group <i class="far fa-plus-square"></i></button>
+                    <button class='bg-warning' id='addG-Cancel' onclick='addGrCancel()'><i class="far fa-window-close"></i></button>
+                    <span style="color:red;"  id='addG-no'>fill name box</span>
+                </div>
             </div>
-            <div class="col-3 nav">
-                <button type="button"  onclick ='back()'>Back</button>
-                <button type="button"  onclick ="forward()">Forward</button>
-            </div>
+        </div>
+      </div>  
+    </div>
+  </div>
 
 
-    {% block content %}
-    {% endblock %}
-   
-    
+  <!-------------- Modal Add Event---------------------------------- -->
+<div class="modal fade" id="m_add_event" role="dialog">
+    <div class="modal-dialog">
+     <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:25px 30px;">
+          <h4><i class="fas fa-calendar-plus"></i> Add Event</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+            <form role='form' id='addEventForm'>
+                <div class ='form-group'>
+                    <label for="groups"><i class="fas fa-object-group"> Group</i>  </label>
+                    <select id="group_list" onchange="changroup(this)" name='groups'>
+                        <option id=grList-0></option>
+                    </select>
+                </div>
+                <div class ='form-group'>
+                    <label for="title"><i class="fas fa-signature"> Title </i> </label>
+                    <input type="text" id="title" name="title" >
+                </div>
+                <div class ='form-group'>
+                    <label for="date"><i class="fas fa-calendar"> Event Date </i> </label>
+                    <input type="date" id="date" name="date" >
+                </div>
+                <div class ='form-group' >
+                    <div class='float-left'id='eventT-s'>
+                        <label for="start"><i class="fas fa-clock"> Start Time </i></label>
+                        <select id="start" name="start" value='00:00' onchange="changeEnd(this)">
+                            <option ></option>
+                        </select>  
+                    </div>
+                    
+                    <div class='float-right '>
+                        <label for="allDay"><i class="fas fa-sun">All Day</i></label>
+                        <input type="checkbox"  id= "allDay" onchange="allDayChange(this)">                              
+                    </div>
+                    <div class='float-non ' id='eventT-e'>
+                        <label for="end"><i class="fas fa-clock"> To </i></label>
+                        <select id="end" name="end"></select>
+                                                    
+                    </div>
+                </div>
+                <div class ='form-group'>
+                    <label for="reminder"><i class="fas fa-bell"> Reminder </i></label>
+                    <select id="reminder" name="reminder"  >
+                        <option ></option>
+                    </select> 
+                </div>
+                <div class ='form-group'>
+                    <label for="descr"><i class="fab fa-elementor">Description </i></label>
+                    <textarea id="descr" name="descr" rows="1" cols="25"></textarea>
+                </div>
+            </form>   
+            <button onclick="checkEvent()" id="addEventBtn" class="btn btn-success btn-block"><i class="fas fa-calendar-plus"> Add Event </i></button>      
+            
+
+        </div>
+      </div>  
+    </div>
+</div>
+
+  <!-------------- Modal edit event---------------------------------- -->
+<div class="modal fade" id="mdayEvent" role="dialog">
+    <div class="modal-dialog">
+     <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:25px 30px;">
+          <h5><i class="fas fa-calendar-day" id= 'modalDate'></i> </h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+            <div class="groups content" >
+              <div id='mEvent' > 
+                <div id='eventL-0'  class="row border mt-1 " data-toggle="collapse" data-target="#event-0"></div>
+              </div>
+              <div class='mt-4'>
+              <button  id="adE" class="btn btn-success btn-block"><i class="fas fa-calendar-plus"> Add Event </i></button>    
+              </div>  
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="edit_user" role="dialog">
+    <div class="modal-dialog">
+
+                <!-- Modal content edit account-->
+    <div class="modal-content">
+        <div class="modal-header" style="padding:35px 50px;">
+            <h4><i class="fas fa-user-plus"></i> Edit Account</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+    <div class="modal-body" style="padding:40px 50px;">
+        <form role='form' id='eform' onsubmit="return checkAll()" action="{{url_for('edit_user')}}"  method="POST">
+        <div class="form-group">
+          <label for="usrname"><i class="fas fa-user"></i> Username</label>
+          <input id='uname' type="text" class= 'form-control' name="uname" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="inputEmail"><span class="fas fa-envelope"></span> Email</label>
+          <input type="email" class= 'form-control' name="iemail"  disabled>
+        </div>
+        
+        <div class="form-group">
+          <label for="psw"><span class="fas fa-eye"></span> Password</label>
+          <input type="password" class="form-control"  name='psw'  minlength="8" required placeholder="Enter password" onchange='formChange=true'>
+        </div>
+        
+        <div class="form-group">
+          <label for="psw"><span class="fas fa-eye"></span>Re Password</label>
+          <span  id='notsame' class='bg-warning'> Are not same !</span>
+          <input type="password" class="form-control" name='repsw' minlength="8" required placeholder="Re Enter password" onchange='formChange=true'>
+        </div>
+                     
+       
+        <div class="form-group">
+          <label for="inputFirstName"><b>First Name</b></label><br>
+          <input type="varchar" class="form-control" name="fname" required onchange='formChange=true'>
+        </div>  
+        <div class="form-group">
+          <label for="inputLastName"><b>Last Name</b></label>
+          <input type="varchar" class="form-control" name="lname" required onchange='formChange=true'>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-power-off"></i> Submit</button>
+        </form>
+     </div>
+   </div>  
+</div>
+</div>
+
+  
 </body>
 </html>
-<script>
-    user={{user|tojson}} 
-    
-</script>
-<script src="{{url_for('static', filename = 'script.js')}}"></script>
+
+ <script src="{{url_for('static', filename = 'script.js')}}"></script>
 
 {% block footer %}
 {% endblock %}

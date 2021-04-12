@@ -34,16 +34,8 @@ app.config['MAIL_USERNAME'] = 'procalendar.mehrdad@gmail.com'
 app.config['MAIL_PASSWORD'] = 'Artin@2014'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-#manager = Manager(app)
 mail = Mail(app)
 
-'''
-def shell_context():
-    import os, sys
-    return dict(app=app, os=os, sys=sys)
-
-#manager.add_command("shell", Shell(make_context=shell_context))
-'''
 
 def async_send_mail(app, msg):
     with app.app_context():
@@ -194,6 +186,26 @@ def defualt_calendar():
 
 
 
+#edit user
+@app.route('/edit_user' ,methods=['POST','GET'])
+@is_logged_in
+def edit_user():
+    if request.method =='POST':
+        psw=request.form['psw']
+        lname=request.form['lname']
+        fname=request.form['fname']
+        con=sql.connect("mdn1.db")
+        cur=con.cursor()        
+        cur.execute('UPDATE users SET password=?,lname=?,fname=? WHERE username=?',(psw,lname,fname,session['username']))        
+        con.commit()
+        flash('Your Account updated')
+        return redirect('/dashboard')
+    else:
+        return     
+    
+    
+
+
 
 ##dashboard
 @app.route('/dashboard')
@@ -203,7 +215,8 @@ def dashboard():
     con=sql.connect("mdn1.db")
     con.row_factory =dict_factory
     cur=con.cursor()
-    cur.execute("select username , email, lname, fname, firstDay,timeInterval,viewLy from users where username = ?",(session['username'],))
+    #cur.execute("select username , email, lname, fname, firstDay,timeInterval,viewLy from users where username = ?",(session['username'],))
+    cur.execute("select * from users where username = ?",(session['username'],))
     global user 
     global groups
     user=cur.fetchall()[0]
@@ -213,14 +226,13 @@ def dashboard():
     con.close()
     #return render_template('indexi.html',user=user)
     print(user['viewLy']+','+str(len(user['viewLy'])))
-    if user['viewLy']=='   Week':
-       
-        return render_template('weekly1.html',user=user)
+    if user['viewLy']=='   Week':       
+        return render_template('weekly.html',user=user,groups=groups)
     if user['viewLy']=='   Month':
-        return render_template('indexi.html',user=user)
+        return render_template('monthly.html',user=user,groups=groups)
     if user['viewLy']==' Day':
         return render_template('dayly.html',user=user)        
-    return render_template('indexi.html',user=user)
+    return render_template('monthly.html',user=user,groups=groups)
    
 
 
@@ -228,7 +240,8 @@ def dashboard():
 @app.route('/month_calendar',methods = ['POST','GET'])
 @is_logged_in
 def month_calendar():
-   
+    print(scheduler.get_jobs())
+     
 #   if method != 'POST" return redirect 
     data_rec=json.loads(request.form['data'])   
     month = data_rec['month']
@@ -400,6 +413,10 @@ def edit_event():
     if (jsd['st'] =='editEv'):
         event_id=int(jsd['ido'])
         cur.execute('UPDATE event SET eventname=?,address=?,username=?,date=?,start=?,endt=?,groupID=?, reminder=? WHERE eventID=?',(name,address,uname,date1,start,endt,groupID,reminder,event_id))
+        try:
+            scheduler.remove_job(str(a))
+        except:
+            a=0
         #scheduler.remove_job(str(event_id))
         
     if (jsd['st']=='addEv'):
@@ -416,8 +433,12 @@ def edit_event():
     if (jsd['st']=='delEv'):
         a=int(jsd['ido'])
         cur.execute('DELETE FROM event WHERE eventID = ?;',(a,))
-        #scheduler.remove_job(str(a))
         date1='2021-03-02'
+        try:
+            scheduler.remove_job(str(a))
+        except:
+            a=0
+        
 
     if (jsd['st']=='dayEvents'):
         date1=jsd['day']
@@ -504,7 +525,11 @@ def add_sch(events,user):
         #r_d=r_d+timedelta(minutes=1)
         ##################################
         e_id=str(event['eventID'])
-        scheduler.add_job(func=scheduled_task, trigger='date', run_date=r_d,args=[event,user,e_id], id=e_id)
+        try:
+            scheduler.add_job(func=scheduled_task, trigger='date', run_date=r_d,args=[event,user,e_id], id=e_id)
+        except:
+            continue 
+
     return
 
 def scheduled_task(event,user,e_id):

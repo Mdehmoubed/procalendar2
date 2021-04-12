@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-      <script> user={{user|tojson}}        
-    </script>  
+      
     <title>
         PROCalendar
     </title>    
@@ -71,14 +65,12 @@
 
     <div id='view'> 
         <div id='MonthView' >          
-            
-        
-                
+                       
             
             <div class='col-10 offset-1 pl-5'>
-                <div class="row text-center ">        
-                    <div class="col-1 offset-4" ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
-                    <div class="col-2 " id= 'cal_header' ><h2>March 2021</h2></div>
+               <div class="row text-center ">        
+                    <div class="col-1 offset-2" ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
+                    <div class="col-6 " id= 'cal_header' ><h2>March 2021</h2></div>
                     
                     <div class="col-1  " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
                   </div> 
@@ -101,10 +93,11 @@
                 <div class="col m-1 border  rounded text-truncate "><div class='text-right' name='head' ></div><div class='text-left' name='event'></div></div> 
                 <div class="col m-1 border  rounded text-truncate "><div class='text-right' name='head' ></div><div class='text-left' name='event'></div></div>           
               </div>
-             </div>  
-          </div>            
+            </div>  
+        </div> 
+    </div>             
       
-    </div>   
+   
       
         <!------------------------------- Modal setting---------------------------------------->
         <div class="modal fade" id="msetting" role="dialog">
@@ -259,7 +252,7 @@
         <div class="modal fade" id="edit user" role="dialog">
             <div class="modal-dialog">
         
-          <!-- Modal content-->
+          <!-- Modal content edit account-->
             <div class="modal-content">
                 <div class="modal-header" style="padding:35px 50px;">
                     <h4><i class="fas fa-user-plus"></i> Edit Account</h4>
@@ -326,21 +319,17 @@
         
         $('[id |="addG"]').hide()
         t1= new Date('06-24-2020');
-        var groups
         var today= new Date();
-       
-        
+             
         var day =new Date(today.getTime() - (today.getTimezoneOffset() * 60000 )).toISOString().split('T')[0]
         var month=today.getMonth();
         var year=today.getFullYear();
         var dayToV=today.getDate();
         $("#userShow").text(user.fname)
-        
-                
+                        
         $("[name='first_day']").click(function() {fd=parseInt(($(this).val()));user.firstDay=fd; setUser()});
         $("[name='timeInt']").click(function() {ti=parseInt($(this).val());user.timeInterval=ti;  setUser()});
        
-
         $(document).ready(function(){
             $("#backward").click(function(){back()}) ,
             $("#forward").click(function(){forward()}) ,
@@ -399,12 +388,13 @@
             
                     }
             }
-
-
+      
             viewCom();
-          
         
-        }) }
+        }) 
+        
+    
+    }
 
     function forward(){
         month ++

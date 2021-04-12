@@ -10,7 +10,7 @@
   </body >
   <nav class="navbar navbar-expand-md bg-primary navbar-dark sticky-top">
     <!-- Brand -->
-    <span class="navbar-brand " style="font-size: 30px; color:red"><strong>PR<i class="far fa-calendar"></i>Calendar</strong></span>
+    <span class="navbar-brand  " style="font-size: 30px; color:red"><strong>PR<i class="far fa-calendar"></i>Calendar</strong></span>
   
     <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mehr">
@@ -19,10 +19,13 @@
   
     <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="mehr">
-      <ul class="navbar-nav ml-auto" style="font-size: 25px; ">
-        <li class="nav-item "><a class="nav-link" id="signup" ><i class="fas fa-user"></i> Sign Up</a></li>
-        <li class="nav-item "><a class="nav-link " id="logi"><i class="fas fa-sign-in-alt"></i> LogIn</a></li>  
+      <ul class="navbar-nav" style="font-size: 25px; ">
+        <li class="nav-item "><a class="nav-link " id="logi"><i class="fas fa-sign-in-alt"> LogIn</i> </a></li>  
+      </ul> 
+      <ul class="navbar-nav ml-auto " style="font-size: 25px; ">
+        <li class="nav-item "><a class="nav-link" id="signup" ><i class="fas fa-user-plus"> Sign Up</i> </a></li>
       </ul>
+      
     </div>
   </nav>
 
@@ -113,10 +116,18 @@
                     </div>
                     <div class='col-6 text-primary' ><i  id='forgotten'> Forgotten password</i> </div>
                   </div>  
+                  <div class = 'ml-2'>
+                    <label ><i  > Don't have an account</i> </label>
+                    <button id='signup1' class="btn btn-warning ml-5"><i class="fas fa-user-plus"></i> SignUp </i></button>
+
+                  </div>
+
                   <div class="form-group">
+                    
                     <i class='bg-warning' id='logMsg'></i>
                   </div>
                     <button onclick="login()" class="btn btn-success btn-block"><i class="fas fa-power-off"> Login </i></button>
+                
                 </form>
               </div>
             </div>  
@@ -176,7 +187,7 @@
               </div>
   
               <button type="submit" class="btn btn-success btn-block"><i class="fas fa-power-off"></i> Submit</button>
-             
+            </form>
           </div>
         </div>  
       </div>
@@ -221,6 +232,8 @@
         $(document).ready(function(){                   
           $("#logi").click(function(){$("#mlogin").modal();$('#logMsg').hide()});
           $("#signup").click(function(){$("#msignup").modal();$('#existUser').hide(); $('#existEmail').hide();$('#notsame').hide()});
+          $("#signup1").click(function(){$("#mlogin").modal('hide');$("#msignup").modal();$('#existUser').hide();
+             $('#existEmail').hide();$('#notsame').hide()});
           $('[name=uname]').blur(function(){checkUserName(this)})
           $('[name=repsw]').blur(function(){checkEqu(this)})
           $('[name=iemail]').blur(function(){checkInEmail(this)})
