@@ -99,7 +99,7 @@ def checkuser():
     con=sql.connect("mdn1.db")
     cur=con.cursor()
     checkReq=json.loads(request.form['checkReq'])
-    print(checkReq)
+    #print(checkReq)
     if checkReq['flag'] == 'uname':
         cur.row_factory= dict_factory
         cur.execute('SELECT * FROM users WHERE username=?',(checkReq['uname'],))
@@ -117,7 +117,7 @@ def checkuser():
     if checkReq['flag'] == 'validemail':
        global rndNum
        rndNum=random.randint(100000,999999) 
-       print(rndNum)
+       #print(rndNum)
        email=checkReq['email']
        uname=checkReq['username']
        subjects='PRO-Calendar email validation'
@@ -126,9 +126,9 @@ def checkuser():
        send_email(email,message_body,subjects)
        global requestTime 
        requestTime = datetime.now()
-       print(requestTime) 
+       #print(requestTime) 
        requestTime += timedelta(minutes=5)#5 minutes life time
-       print(requestTime)
+       #print(requestTime)
        return  'ok'  
     if checkReq['flag'] == 'rndcode':
         code= int(checkReq['code'])
@@ -225,7 +225,7 @@ def dashboard():
     groups=cur.fetchall()
     con.close()
     #return render_template('indexi.html',user=user)
-    print(user['viewLy']+','+str(len(user['viewLy'])))
+    #print(user['viewLy']+','+str(len(user['viewLy'])))
     if user['viewLy']=='   Week':       
         return render_template('weekly.html',user=user,groups=groups)
     if user['viewLy']=='   Month':
@@ -240,7 +240,7 @@ def dashboard():
 @app.route('/month_calendar',methods = ['POST','GET'])
 @is_logged_in
 def month_calendar():
-    print(scheduler.get_jobs())
+    #print(scheduler.get_jobs())
      
 #   if method != 'POST" return redirect 
     data_rec=json.loads(request.form['data'])   
@@ -304,7 +304,7 @@ def week_calendar():
     viewLy=data_rec['viewLy']
     timeInterval=data_rec['timeInterval']
     firstDay=int(data_rec['firstDay'])
-    print(firstDay)
+    #print(firstDay)
     week_header,week_abbr,month_name,month_abbr,c = calendName(firstDay)
     j=0
     for i in c.itermonthdays4(year,month):
@@ -536,7 +536,7 @@ def scheduled_task(event,user,e_id):
     message_body=user['fname']+', you have an upcomming event\n on '+event['date']+' ,at '+event['start']+'\n\
     The event name is '+event['eventname']+'\n\n pro-calendar team'
     subjects='reminder'
-    print(event['eventID'])
+    #print(event['eventID'])
        
     send_email(user['email'],message_body,subjects)
     return

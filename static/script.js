@@ -155,8 +155,9 @@ function dayEvents(day){
                     }
                     divi='eventL-'+eL.eventID.toString();divt='eventF-'+eL.eventID.toString();
                     e=e.clone(); e.attr('id',divi); e.attr('data-target','#'+divt) 
-                    e.css('background-color',gr.color);                    
-                    e.text(eL.eventname);
+                    e.css('background-color',gr.color);  
+                    e.html('<div class="ml-2"></div><div class="ml-auto"></div>')              
+                    e.children().eq(0).text(eL.eventname); e.children().eq(1).html('<i class="fas fa-angle-down rotate-icon"></i>')
                      $('#mEvent').append(e);
                     
                     t=ta.clone(); t.attr('id',divt); tc=tb.clone();tc.attr('id','fE-'+divt)
