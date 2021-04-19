@@ -31,7 +31,7 @@ scheduler.start() # start to work
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'procalendar.mehrdad@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Artin@2014'
+app.config['MAIL_PASSWORD'] = 'Ashtad@1363'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -62,8 +62,8 @@ def is_logged_in(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
-            #flash( Please login')
-            return redirect(url_for('no'))
+            flash( 'Please login')
+            return redirect('/')
     return wrap
 
 
@@ -99,7 +99,7 @@ def checkuser():
     con=sql.connect("mdn1.db")
     cur=con.cursor()
     checkReq=json.loads(request.form['checkReq'])
-    #print(checkReq)
+    print(checkReq)
     if checkReq['flag'] == 'uname':
         cur.row_factory= dict_factory
         cur.execute('SELECT * FROM users WHERE username=?',(checkReq['uname'],))
@@ -152,6 +152,14 @@ def checkuser():
             session['username'] = checkReq['uname'] 
             #print(session['username'])  
             return{'pass':''}
+    #del Account########################################    
+    if checkReq['flag']=='delUser':
+        a=session['username']
+        cur.execute('DELETE FROM users WHERE username = ?;',(a,))
+        con.commit()
+        con.close()      
+        return 'ok'
+
 
 @app.route('/default_calendar',methods = ['POST','GET'])
 def defualt_calendar():
@@ -225,7 +233,7 @@ def dashboard():
     groups=cur.fetchall()
     con.close()
     #return render_template('indexi.html',user=user)
-    #print(user['viewLy']+','+str(len(user['viewLy'])))
+    print(user['viewLy']+','+str(len(user['viewLy'])))
     if user['viewLy']=='   Week':       
         return render_template('weekly.html',user=user,groups=groups)
     if user['viewLy']=='   Month':
@@ -334,10 +342,12 @@ def week_calendar():
     uname=session['username']
     time_header=[]
     time_event=[]
+    
     for i in range(0,1440,k):
         ta=t1.strftime('%H:%M')
         time_header.append(ta)
         tb= (t1+td).strftime('%H:%M')
+        
         for j in wekk:
             cur.execute("select event.eventname , groups.color, event.eventID \
             from event natural join groups where groups.showG=1 and  event.date =? \
@@ -345,14 +355,19 @@ def week_calendar():
             (event.endt > ? and  event.endt <= ?) or ( event.start <= ? and  ? < event.endt))\
             order by event.start",(j['id'],uname,ta,tb,ta,tb,ta,ta))
             time_event.append(cur.fetchall())
+          
         t1+=td
     #print(time_header)
-    #print(time_event)
+    #print(str(time_event[0])+','+str(type(time_event[0])))
+    #if len(time_event[49])>1 :
+    #    print(time_event[49])    
+
+
     
     con.close()  
         
     data = {'head_cal_week':head_cal_week,'wekk':wekk,'user':user,'time_header':time_header,'time_event':time_event,'groups':groups}
-    #print(data)
+    
     return {'data':data}
 
 
@@ -454,7 +469,7 @@ def edit_event():
     day_head=d1.strftime('%A, %B %d,%Y' )
     
     day_data={'day_event':events,'day_id':date1,'day_head':day_head}
-    #print(day_data)
+    print(day_data)
     return {'day_data':day_data}
 
 

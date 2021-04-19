@@ -16,7 +16,7 @@
         PROCalendar
     </title>    
 </head>
-<nav class="navbar navbar-expand-md bg-primary navbar-dark sticky-top ">
+<nav class="navbar navbar-expand-md bg-primary navbar-dark  sticky-top ">
     <!-- Brand -->
     <span class="navbar-brand " style="font-size: 30px; color:red"><strong>PR<i class="far fa-calendar"></i>Calendar</strong></span>
   
@@ -277,8 +277,13 @@
           <input type="varchar" class="form-control" name="lname" required onchange='formChange=true'>
         </div>
 
-        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-power-off"></i> Submit</button>
+        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-power-off"> Submit</i></button>
         </form>
+        <div class='text-center mt-2'>
+          <button onclick='delAccount()' class="btn btn-danger "><i class="fas fa-user-slash"> Delete Account</i> </button>
+
+        </div>
+       
      </div>
    </div>  
 </div>

@@ -5,14 +5,14 @@
 
 {% block content %}
          
-<div id='WeekView' class='position-relative' >          
+<div id='WeekView' class='position-relative block' >          
         
             
     <div class='col-11 ' >
        
 
-      <div class="row text-center  " css='z-index:-10'>        
-        <div class="col-1 offset-3" ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
+      <div class="row text-center ">        
+        <div class="col-1 offset-3 " ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
         <div class="col-6 " id= 'cal_header' ><h2>March 2021</h2></div>
         
         <div class="col-1  " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
@@ -27,10 +27,11 @@
         <div class="col m-1 border border-success rounded-circle text-truncate bg-success" ></div>
         <div class="col m-1 border border-success rounded-circle text-truncate bg-success"></div>
       </div>
- 
-      <div class="row row-cols " style="height:40px;font-size:20px; position: relative ;z-index:0" name='row'  >
+      <div id='vf' style='position:relative; '>
+        
+      <div class="row row-cols " style="height:40px;font-size:20px; " name='row'  >
         <div class="col  text-right text-top "style="font-size:15px; position:relative; top: -10px;"name='timee' >00:00</div> 
-        <div class="col border  rounded "><div class='row row-cols' name='event'></div></div> 
+        <div class="col border  rounded "><div class='row row-cols' name='event' ></div></div> 
         <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
         <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
         <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
@@ -38,6 +39,7 @@
         <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
         <div class="col border  rounded "><div class='row row-cols' name='event'></div></div>
       </div>
+    </div>
     </div>  
 </div>            
 

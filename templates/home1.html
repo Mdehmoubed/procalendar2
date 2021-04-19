@@ -101,7 +101,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-body" style="padding:40px 50px;">
-                <form role="form" id='lform' ></form>
+                <form role="form" id='rform' ></form>
                   <div class="form-group">
                     <label for="usrname"><i class="fas fa-user"></i> Username</label>
                     <input type="text" class="form-control" id='unameLog' minlength='5' placeholder="Enter Username">
@@ -151,7 +151,7 @@
           </div>
           <div class="modal-body" style="padding:40px 50px;">
            
-            <form role='form' id='rform'  onsubmit="return checkAll()" action="{{url_for('adduser')}}"  method="POST">
+            <form role='form' id='uform'  onsubmit="return checkAll()" action="{{url_for('adduser')}}"  method="POST">
               <div class="form-group">
                 <label for="usrname"><i class="fas fa-user"></i> Username</label>
                 <span  id='existUser' class='bg-warning ' > Was taken !</span>

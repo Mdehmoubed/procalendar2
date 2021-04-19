@@ -36,7 +36,7 @@
                 e=$('[name="event"]').eq(i)
                 e.empty();
                     for (j in day_event[i]){
-                        e.append("<span style='background-color:"+day_event[i][j].color+
+                        e.append("<span onclick='showEvent(this)' class='badge badge-pill' style='background-color:"+day_event[i][j].color+
                             "'id="+day_event[i][j].eventID+ ">"+day_event[i][j].eventname+"</span><br>")    
             
                     }
@@ -48,6 +48,7 @@
         
     
     }
+    var bypass=''
 
     function forward(){
         month ++
@@ -58,9 +59,17 @@
         month --
         if (month<0){ month=11; year --}
         view()   }
-
+    
+    function showEvent(a){
+        bypass=$(a).parent().parent().attr('id')
+        dayEvents(bypass,true,a.id)
+        $("#mdayEvent").modal()
+    }    
    
-    function clickOnCell(a){dayEvents(a.id);  $("#mdayEvent").modal()}
+    function clickOnCell(a){
+        if (a.id!=bypass) {dayEvents(a.id,false,0);  $("#mdayEvent").modal()}
+        bypass=''
+    }
 
 
 

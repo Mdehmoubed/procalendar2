@@ -27,11 +27,29 @@ $.post("/week_calendar",{'data': myJSON},function(resp){
     for (i in time_header){$('[name="timee"]').eq(i).text(time_header[i])
    
     }
-    for (i in time_event){
-        u=$('[name="event"]').eq(i); u.html('');u.parent().attr('id', wekk[i%7].id+' '+time_header[Math.floor(i/7)]); u.parent().removeClass('border-danger')  
+    
+    for (i in time_event){       
+        u=$('[name="event"]').eq(i); u.html('');u.attr('id', wekk[i%7].id+' '+time_header[Math.floor(i/7)]); u.removeClass('border-danger')  
+        
+        jj=0
         for (j in time_event[i]){
-            u.append('<div class="col text-truncate" style="background-color:'+time_event[i][j].color+'" name='+
-            time_event[i][j].eventID+'>'+time_event[i][j].eventname+'</div>')                   
+            jj=jj+1
+            if (i==0 & jj==1){                
+                u.append('<div></div>')
+                m=u.children().eq(-1)
+                m.css({'position':'relative','z-index':'10','width':'33%','background-color':'red','height':'149px'}); m.addClass('border rounded')
+                continue
+            }
+            if (i==7 & jj==1){                
+                u.append('<div></div>')
+                m=u.children().eq(-1)                
+                m.css({'position':'relative','left':'33%','z-index':'10','width':'50%','background-color':'orange','height':'179px','writing-mode': 'vertical-rl'}); m.addClass('border rounded text-truncate')
+                m.text('sdfasdfsdfsdf')
+                continue
+            }
+                
+            u.append('<span class="col bage badge-pill text-truncate" style="background-color:'+time_event[i][j].color+'; " name='+
+            time_event[i][j].eventID+'>'+time_event[i][j].eventname+'</span>')                   
         }
     }          
 
@@ -68,9 +86,18 @@ year=a.getFullYear()
 dayToV=a.getDate()
 view()    }
 
+function showEvent(a){
+    bypass=$(a).parent().parent().attr('id')
+    alert(a.id+','+bypass)
+    dayEvents(bypass,true,a.id)
+    $("#mdayEvent").modal()
+    
+
+}    
+
 
 function clickOnCell(a){
-    dayEvents(a.id.slice(0,10));  $("#mdayEvent").modal()
+    dayEvents(a.id.slice(0,10),false,0);  $("#mdayEvent").modal()
 
     //alert(a.id.slice(0,10))//+" ,left= "+ $(a).offset().left+',top='+ $(a).offset().top)
     //$('#viewz').css({'background-color':'red','width':'50px','height':'50px', 'z-index':'-100'})
