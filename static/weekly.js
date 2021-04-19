@@ -33,21 +33,7 @@ $.post("/week_calendar",{'data': myJSON},function(resp){
         
         jj=0
         for (j in time_event[i]){
-            jj=jj+1
-            if (i==0 & jj==1){                
-                u.append('<div></div>')
-                m=u.children().eq(-1)
-                m.css({'position':'relative','z-index':'10','width':'33%','background-color':'red','height':'149px'}); m.addClass('border rounded')
-                continue
-            }
-            if (i==7 & jj==1){                
-                u.append('<div></div>')
-                m=u.children().eq(-1)                
-                m.css({'position':'relative','left':'33%','z-index':'10','width':'50%','background-color':'orange','height':'179px','writing-mode': 'vertical-rl'}); m.addClass('border rounded text-truncate')
-                m.text('sdfasdfsdfsdf')
-                continue
-            }
-                
+           
             u.append('<span class="col bage badge-pill text-truncate" style="background-color:'+time_event[i][j].color+'; " name='+
             time_event[i][j].eventID+'>'+time_event[i][j].eventname+'</span>')                   
         }
