@@ -347,7 +347,6 @@ def week_calendar():
         ta=t1.strftime('%H:%M')
         time_header.append(ta)
         tb= (t1+td).strftime('%H:%M')
-        
         for j in wekk:
             cur.execute("select event.eventname , groups.color, event.eventID \
             from event natural join groups where groups.showG=1 and  event.date =? \
@@ -355,12 +354,11 @@ def week_calendar():
             (event.endt > ? and  event.endt <= ?) or ( event.start <= ? and  ? < event.endt))\
             order by event.start",(j['id'],uname,ta,tb,ta,tb,ta,ta))
             time_event.append(cur.fetchall())
-          
         t1+=td
     #print(time_header)
-    #print(str(time_event[0])+','+str(type(time_event[0])))
-    #if len(time_event[49])>1 :
-    #    print(time_event[49])    
+    print(str(time_event[0])+','+str(type(time_event[0])))
+    if len(time_event[49])>1 :
+        print(time_event[49])    
 
 
     
