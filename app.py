@@ -288,7 +288,7 @@ def month_calendar():
     day_event=[]
     for i in day_header:
         day_id = i['id'] 
-        cur.execute("select event.eventname ,groups.color, event.start,event.eventID \
+        cur.execute("select event.eventname ,groups.color, event.start,event.eventID,event.endt \
         from event natural join groups where groups.showG=1 and \
             event.date =? and event.username=? order by event.start",(day_id,uname))
         day_event.append(cur.fetchall())
@@ -333,38 +333,79 @@ def week_calendar():
         head_cal_week=wekk[0]['week_head']+'-'+wekk[-1]['week_head']+', '+wekk[-1]['id'].split('-')[0]
     #print(wekk)
     #k=ViewSet['timeInterval']
-    k=user['timeInterval']
+    #k=user['timeInterval']
     t1= datetime(2020,2,2,0,0)
-    td=timedelta(minutes=user['timeInterval'])
+    td=timedelta(minutes=60)
     con=sql.connect("mdn1.db")
     con.row_factory =dict_factory
     cur=con.cursor()
     uname=session['username']
+    
+    '''
+    daily_ev=[]
+    for j in wekk:
+        cur.execute("select event.eventname , groups.color, event.eventID from\
+        event natural join groups where\
+        groups.showG=1 and  event.date =?  and event.username=?\
+        order by event.start,descend event.endt ",(j['id'],uname))
+        daily_ev.append(cur.fetchall())
+    print(daily_ev)
+    '''
+    daily_ev=[]
+    for j in wekk:
+        cur.execute("select event.eventname, event.start, event.endt,\
+        groups.color, event.eventID from\
+        event natural join groups where\
+        groups.showG=1 and  event.date =?  and event.username=?\
+        order by event.start ASC,event.endt DESC ",(j['id'],uname))
+        rest=cur.fetchall()
+        print(rest)
+        aDay=daily_sort(rest)
+
+        daily_ev.append(aDay)
+    print(daily_ev)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     time_header=[]
     time_event=[]
     
-    for i in range(0,1440,k):
+    for i in range(0,1440,60):
         ta=t1.strftime('%H:%M')
         time_header.append(ta)
         tb= (t1+td).strftime('%H:%M')
         for j in wekk:
-            cur.execute("select event.eventname , groups.color, event.eventID \
+            '''cur.execute("select event.eventname , groups.color, event.eventID \
             from event natural join groups where groups.showG=1 and  event.date =? \
             and event.username=? and ((event.start >= ? and event.start < ? ) or \
             (event.endt > ? and  event.endt <= ?) or ( event.start <= ? and  ? < event.endt))\
             order by event.start",(j['id'],uname,ta,tb,ta,tb,ta,ta))
-            time_event.append(cur.fetchall())
+            time_event.append(cur.fetchall())'''
+            time_event.append([])
         t1+=td
     #print(time_header)
+    '''
     print(str(time_event[0])+','+str(type(time_event[0])))
     if len(time_event[49])>1 :
         print(time_event[49])    
-
+    '''
 
     
     con.close()  
         
-    data = {'head_cal_week':head_cal_week,'wekk':wekk,'user':user,'time_header':time_header,'time_event':time_event,'groups':groups}
+    data = {'head_cal_week':head_cal_week,'wekk':wekk,'user':user,'time_header':time_header,'time_event':time_event,'daily_ev':daily_ev,'groups':groups}
     
     return {'data':data}
 
@@ -553,6 +594,43 @@ def scheduled_task(event,user,e_id):
        
     send_email(user['email'],message_body,subjects)
     return
+
+def daily_sort(a):
+    dest=[]
+    rest=a.copy()
+    while(len(rest)>0):
+        b=ax(rest)
+        dest.append(b)
+    return dest
+
+def ax(rest):
+    stage=[]
+    endt=''
+    while(len(rest)>0):
+        st=True
+        for item in range(len(rest)):
+            if rest[item]['start']>=endt:
+                stage.append(rest.pop(item))
+                endt=stage[-1]['endt']
+                duration=toMin(endt)-toMin(stage[-1]['start'])
+                stage[-1]['dur']=duration
+                stage[-1]['Y_offset']=int(stage[-1]['start'].split(':')[1])
+
+                st=False
+                break
+        if st:
+            break
+                    
+    return stage
+def toMin(time='00:00'):
+    a=time.split(':')
+    return int(a[0])*60+int(a[1])
+            
+        
+        
+
+
+        
 
 
 

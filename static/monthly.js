@@ -36,9 +36,10 @@
                 e=$('[name="event"]').eq(i)
                 e.empty();
                     for (j in day_event[i]){
-                        e.append("<span onclick='showEvent(this)' class='badge badge-pill' style='background-color:"+day_event[i][j].color+
-                            "'id="+day_event[i][j].eventID+ ">"+day_event[i][j].eventname+"</span><br>")    
-            
+                        eventi=day_event[i][j]
+                        e.append("<span onclick='showEvent(this)' class='badge badge-pill' style='background-color:"+eventi.color+
+                            "'id="+eventi.eventID+ ">"+eventi.eventname+"</span><br>")    
+                        $('#'+day_event[i][j].eventID).tooltip( {title:eventi.start+" to "+eventi.endt+' '+eventi.eventname,trigger:'hover', placement: "right"})
                     }
             }
       
@@ -48,7 +49,7 @@
         
     
     }
-    var bypass=''
+    
 
     function forward(){
         month ++
@@ -65,6 +66,8 @@
         dayEvents(bypass,true,a.id)
         $("#mdayEvent").modal()
     }    
+    
+
    
     function clickOnCell(a){
         if (a.id!=bypass) {dayEvents(a.id,false,0);  $("#mdayEvent").modal()}

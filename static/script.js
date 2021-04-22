@@ -6,6 +6,7 @@ var day =new Date(today.getTime() - (today.getTimezoneOffset() * 60000 )).toISOS
 var month=today.getMonth();
 var year=today.getFullYear();
 var dayToV=today.getDate();
+var bypass=''
 $("#userShow").text(user.fname)
                 
 $("[name='first_day']").click(function() {fd=parseInt(($(this).val()));user.firstDay=fd; setUser()});
@@ -204,44 +205,7 @@ function dayEvents(day,singleEn,eID){
         })   
 
 }
-/*
-function showEv(a,day){
-    var send={'st':'dayEvents','day': day};
-    myJSON = JSON.stringify(send);
-    $.post( "/edit_event", {'id': myJSON},function(data){
-        $('#modalDate').text("Edit Event ") 
-        event= data.day_data.day_event
-        $('#mEvent').show()
-        tb=$('#addEventForm')
-        for (i in event ){
-            if  (event[i].eventID==parseInt(a)){eL=event[i]  ;break}
-        }
-       
-        for ( j in groups){
-            if (groups[j].groupID == eL.groupID){ gr=groups[j];break }
-                }             
-                      
-        tc=tb.clone();tc.attr('id','Fex')
-        a=tc.find('#group_list');a.attr('disabled',true);a.val(gr.groupID);a.css('background',gr.color);
-        a=tc.find("#title");a.attr('disabled',true);a.val(eL.eventname)
-        a=tc.find("#date");a.attr('disabled',true);a.val(eL.date)
-        a=tc.find("#start");a.attr('disabled',true);a.val(eL.start)
-        if (eL.endt=='23:59'){enn='00:00'}else{enn=eL.endt}
-        a=tc.find("#end");a.attr('disabled',true);a.val(enn)
-        a=tc.find('[id |= "eventT"]');
-        a=tc.find("#allDay");a.attr('disabled',true);a.prop('checked',(enn=='00:00' &  eL.start =='00:00'))
-        a=tc.find("#reminder");a.attr('disabled',true);a.val(eL.reminder)
-        a=tc.find("#descr");a.attr('disabled',true);a.val(eL.address)
-        $('#mEvent').append(tc)
-        b='<button  id="delEv-'+eL.eventID+'" onclick="delEvent(this)"  class="btn btn-danger "><i class="fas fa-calendar-times"> Delete Event </i></button>'
-        $('#mEvent').append(b);
-        b='<button  id="editEv-'+eL.eventID+'"onclick="editEvent(this)" class="btn btn-warning float-right"><i class="fas fa-edit"> Edit Event </i></button>'
-        $('#mEvent').append(b)    
-       
-        
-        })   
 
-}*/
 
 
 function addGroup(){
