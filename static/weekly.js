@@ -49,7 +49,8 @@ $(ss1).append('<div id="currentTime-0" style="z-index:14;background-color:red;po
 $(ss1).parent().children().eq(1).append('<div  id="currentTime-1" style="z-index:12;background-color:Cyan;position:absolute;height:1px ;width:700%;top:'+b+'px"></div>')
 //$('[id ="currentTime-0"]').blink()
 elementToView=document.getElementById(day+' '+timeid)
-elementToView.scrollIntoView()
+if (elementToView!==null){elementToView.scrollIntoView()}
+//
 
 for (i=0;i<7;i++){
     for (j in daily_ev[i]){
