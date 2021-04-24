@@ -1,0 +1,64 @@
+
+    
+{% extends 'layout.html' %}
+
+{% block head %} {% endblock %}
+
+
+{% block content %}
+<div id='dailyView' >  
+    
+       
+
+      <div class="row text-center ">        
+          <div class="col-1 offset-3 " ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
+          <div class="col-6 " id= 'cal_header' ><h2>March 2021</h2></div>
+          
+          <div class="col-1  " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
+      </div> 
+      <div class="row "> 
+      <div class='col-8  m-2 '>      
+      
+     
+      <div id='vf' style='position:relative; overflow-y: scroll; height: 80vh; overflow-x: hidden; padding-right: -10px;padding-top: 5px; '>
+          
+        <div class="row  " style="height:60px;font-size:20px; " name='row'  >
+          <div class="col-2  p-0 text-right   "style="font-size:15px; position:relative; top: -10px;"name='timee' >00:00</div> 
+          <div class="col  border  p-0 rounded "name='event'></div> 
+         
+          
+        </div>
+      </div>
+      </div>
+      <div class='col border border-dark m-2 p-2 rounded 'style='position:relative; overflow-y: scroll; height: 80vh; overflow-x: hidden;'>
+        <div class='row text-center  border  m-2 p-2 rounded' id='listCon'><h4><i class="fas fa-list-alt"> Event List</i>  </h4> </div>
+          <div class='row border   m-2 p-1 rounded' name='eventlist'>
+            <div class='col-1 text-center p-1' style='writing-mode: vertical-rl ;background-color:#f0ff80' name='groList'>
+                sdbv
+            </div>
+            <div class='col'>
+                <i class="fas fa-signature"> </i><a name='titleL'></a></br>
+                <i class="fas fa-clock"> </i><a name='timeEvnt'></a></br>
+                <i class="fas fa-info-circle">  </i><a name='descri'></a>
+               
+               
+            </div>
+
+          </div>
+
+        
+
+  
+      </div>  
+      </div>
+
+     
+    
+
+</div> 
+   
+
+{% endblock %}
+{% block footer %}
+<script src="{{url_for('static', filename = 'daily.js')}}"></script>
+{% endblock %}

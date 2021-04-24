@@ -238,8 +238,8 @@ def dashboard():
         return render_template('weekly.html',user=user,groups=groups)
     if user['viewLy']=='   Month':
         return render_template('monthly.html',user=user,groups=groups)
-    if user['viewLy']==' Day':
-        return render_template('dayly.html',user=user)        
+    if user['viewLy']=='   Day':
+        return render_template('daily.html',user=user,groups=groups)        
     return render_template('monthly.html',user=user,groups=groups)
    
 
@@ -248,20 +248,9 @@ def dashboard():
 @app.route('/month_calendar',methods = ['POST','GET'])
 @is_logged_in
 def month_calendar():
-    #print(scheduler.get_jobs())
-     
-#   if method != 'POST" return redirect 
-    data_rec=json.loads(request.form['data'])   
-    month = data_rec['month']
-    year = data_rec['year']
-    dayToV =data_rec['dayToV']
-    #global ViewSet
-    global user
-    #ViewSet = data_rec['ViewSet']
-    viewLy=data_rec['viewLy']
-    timeInterval=data_rec['timeInterval']
-    firstDay=int(data_rec['firstDay'])
+    month,year,dayToV,viewLy,timeInterval,firstDay=data_requst()
     week_header,week_abbr,month_name,month_abbr,c = calendName(firstDay)
+    global user
     month_header=month_name[month]+" "+str(year)
 
 #make day_header {0:{name:28,cur:c}}  p/c/n are the posible value for cur
@@ -296,24 +285,14 @@ def month_calendar():
     #print (day_event)
     data={'month_header':month_header,'week_header':week_header,'user':user,\
     'day_header':day_header,'day_event':day_event,'groups':groups}
-
     return {'data':data}
 
 @app.route('/week_calendar',methods = ['POST','GET'])
 @is_logged_in
 def week_calendar():
-   
-#   if method != 'POST" return redirect 
-    data_rec=json.loads(request.form['data'])   
-    month = data_rec['month']
-    year = data_rec['year']
-    dayToV = data_rec['dayToV']
-    global user
-    viewLy=data_rec['viewLy']
-    timeInterval=data_rec['timeInterval']
-    firstDay=int(data_rec['firstDay'])
-    #print(firstDay)
+    month,year,dayToV,viewLy,timeInterval,firstDay=data_requst()
     week_header,week_abbr,month_name,month_abbr,c = calendName(firstDay)
+    global user
     j=0
     for i in c.itermonthdays4(year,month):
         if (i[1]==month and i[2]==dayToV):
@@ -326,93 +305,59 @@ def week_calendar():
             hd=month_abbr[i[1]]+' '+str(i[2])
             wekk.append({'week_head':hd,'id':date(i[0],i[1],i[2]).strftime('%Y-%m-%d'),'weekS':week_abbr[i[3]]+' '+hd})
         st-=1
-    #print(wekk)
+   
     if wekk[0]['week_head'].split(' ')[0]==wekk[-1]['week_head'].split(' ')[0]:
         head_cal_week=wekk[0]['week_head']+'-'+wekk[-1]['week_head'].split(' ')[1]+', '+wekk[-1]['id'].split('-')[0]
     else:
         head_cal_week=wekk[0]['week_head']+'-'+wekk[-1]['week_head']+', '+wekk[-1]['id'].split('-')[0]
-    #print(wekk)
-    #k=ViewSet['timeInterval']
-    #k=user['timeInterval']
-    t1= datetime(2020,2,2,0,0)
-    td=timedelta(minutes=60)
+    
+    t1= datetime(2020,2,2,0,0)   
     con=sql.connect("mdn1.db")
     con.row_factory =dict_factory
     cur=con.cursor()
-    uname=session['username']
-    
-    '''
+    uname=session['username']    
     daily_ev=[]
-    for j in wekk:
-        cur.execute("select event.eventname , groups.color, event.eventID from\
-        event natural join groups where\
-        groups.showG=1 and  event.date =?  and event.username=?\
-        order by event.start,descend event.endt ",(j['id'],uname))
-        daily_ev.append(cur.fetchall())
-    print(daily_ev)
-    '''
-    daily_ev=[]
-    for j in wekk:
-        cur.execute("select event.eventname, event.start, event.endt,\
-        groups.color, event.eventID from\
-        event natural join groups where\
-        groups.showG=1 and  event.date =?  and event.username=?\
-        order by event.start ASC,event.endt DESC ",(j['id'],uname))
-        rest=cur.fetchall()
-        print(rest)
-        aDay=daily_sort(rest)
-
+    for j in wekk:       
+        aDay=daily_sort(j['id'],uname,cur)
         daily_ev.append(aDay)
     print(daily_ev)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    time_header=[]
-    time_event=[]
-    
-    for i in range(0,1440,60):
-        ta=t1.strftime('%H:%M')
-        time_header.append(ta)
-        tb= (t1+td).strftime('%H:%M')
-        for j in wekk:
-            '''cur.execute("select event.eventname , groups.color, event.eventID \
-            from event natural join groups where groups.showG=1 and  event.date =? \
-            and event.username=? and ((event.start >= ? and event.start < ? ) or \
-            (event.endt > ? and  event.endt <= ?) or ( event.start <= ? and  ? < event.endt))\
-            order by event.start",(j['id'],uname,ta,tb,ta,tb,ta,ta))
-            time_event.append(cur.fetchall())'''
-            time_event.append([])
-        t1+=td
-    #print(time_header)
-    '''
-    print(str(time_event[0])+','+str(type(time_event[0])))
-    if len(time_event[49])>1 :
-        print(time_event[49])    
-    '''
-
-    
     con.close()  
-        
-    data = {'head_cal_week':head_cal_week,'wekk':wekk,'user':user,'time_header':time_header,'time_event':time_event,'daily_ev':daily_ev,'groups':groups}
-    
+    data = {'head_cal_week':head_cal_week,'wekk':wekk,'user':user,'daily_ev':daily_ev,'groups':groups}
+    return {'data':data}
+## day calendar MVC 
+@app.route('/day_calendar',methods = ['POST','GET'])
+@is_logged_in
+def day_calendar():
+    month,year,dayToV,viewLy,timeInterval,firstDay=data_requst()
+    week_header,week_abbr,month_name,month_abbr,c = calendName(firstDay)
+    con=sql.connect("mdn1.db")
+    con.row_factory =dict_factory
+    cur=con.cursor()
+    uname=session['username']     
+    for i in c.itermonthdays4(year,month):
+        if (i[1]==month and i[2]==dayToV):
+            cal_header= week_header[i[3]]+', '+month_name[i[1]]+' '+str(i[2])+', '+str(year)
+            day_data={'cal_header':cal_header,'id':date(i[0],i[1],i[2]).strftime('%Y-%m-%d')}
+            t1= datetime(2020,2,2,0,0)   
+            day_data['aDay']=daily_sort(day_data['id'],uname,cur)    
+            break
+    print(day_data) 
+    con.close
+    data = {'day_data':day_data,'user':user,'groups':groups}
     return {'data':data}
 
-
+def data_requst():
+    data_rec=json.loads(request.form['data'])   
+    month = data_rec['month']
+    year = data_rec['year']
+    dayToV = data_rec['dayToV']
+    viewLy=data_rec['viewLy']
+    timeInterval=data_rec['timeInterval']
+    firstDay=int(data_rec['firstDay'])
+    return month,year,dayToV,viewLy,timeInterval,firstDay
 
 def calendName(firstDay):
-    week_name={0:'MONDAY',1:'TUESDAY',2:'WEDNESDAY',3:'THURSDAY',4:'FRIDAY',5:'SATURDAY',6:'SUNDAY'}
+    week_name={0:'Monday',1:'Tuesday',2:'Wednesday',3:'Thursday',4:'Friday',5:'Saturday',6:'Sunday'}
     month_name=[]
     for i in calendar_9.month_name:
         month_name.append(i)
@@ -595,9 +540,15 @@ def scheduled_task(event,user,e_id):
     send_email(user['email'],message_body,subjects)
     return
 
-def daily_sort(a):
+def daily_sort(day_id,uname,cur):
     dest=[]
-    rest=a.copy()
+    cur.execute("select event.eventname, event.start, event.endt,\
+        groups.name,event.address,groups.color, event.eventID from\
+        event natural join groups where\
+        groups.showG=1 and  event.date =?  and event.username=?\
+        order by event.start ASC,event.endt DESC ",(day_id,uname))
+    rest=cur.fetchall()
+        
     while(len(rest)>0):
         b=ax(rest)
         dest.append(b)
@@ -625,14 +576,6 @@ def ax(rest):
 def toMin(time='00:00'):
     a=time.split(':')
     return int(a[0])*60+int(a[1])
-            
-        
-        
-
-
-        
-
-
 
 
 def dict_factory(cursor, row):

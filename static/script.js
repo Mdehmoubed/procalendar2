@@ -283,9 +283,6 @@ function checkAll(){
     return formChange
 }
 
-
-
-
 function viewCom(){
     //add listiner for each day 
     $('.col.border.rounded').off()         

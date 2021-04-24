@@ -10,12 +10,14 @@ $.post("/week_calendar",{'data': myJSON},function(resp){
     groups=resp.data.groups
     head_cal_week=resp.data.head_cal_week
     wekk=resp.data.wekk
-    time_header=resp.data.time_header
-    time_event=resp.data.time_event
     daily_ev=resp.data.daily_ev
     $('#cal_header').html('<h2>'+head_cal_week+'</h2>')
     for (i in wekk){
-        $('.col.m-1.border.border-success').eq(i).text(wekk[i].weekS)          
+        $('.col.m-1.border.rounded-circle').eq(i).text(wekk[i].weekS) 
+        if(wekk[i].id==day){
+            $('.col.m-1.border.rounded-circle').eq(i).append('<div style="z-index:14;background-color:blue;position:relative;height:12px "></div>')
+               
+        }          
     }
 //adjust the number of rows to show
 
@@ -45,27 +47,31 @@ b=today.getMinutes()
 sa=a.toString().padStart(2,0)
 timeid=sa+':00'
 ss1='[id="'+day+' ' +timeid+'"]'
-$(ss1).append('<div id="currentTime-0" style="z-index:14;background-color:red;position:relative;height:2px ;top:'+b+'px"></div>')
-$(ss1).parent().children().eq(1).append('<div  id="currentTime-1" style="z-index:12;background-color:Cyan;position:absolute;height:1px ;width:700%;top:'+b+'px"></div>')
+$(ss1).append('<div id="currentTime-0" style="z-index:14;background-color:blue;position:relative;height:2px ;top:'+(b-1)+'px"></div>')
+$(ss1).append('<div style="z-index:14;background-color:blue;position:relative;height:6px ;top:'+(b-5)+'px; width:6px;left:-4px"></div>')
+$(ss1).parent().children().eq(1).append('<div  id="currentTime-1" style="z-index:12;background-color:Cyan;position:absolute;height:1px ;width:700%;top:'+(b-1)+'px"></div>')
+
+
 //$('[id ="currentTime-0"]').blink()
 elementToView=document.getElementById(day+' '+timeid)
-if (elementToView!==null){elementToView.scrollIntoView()}
+if (elementToView!==null){elementToView.scrollIntoView();$('[name="timee"]').eq(a).css('color','blue')}
+else{$('[name="timee"]').eq(a).css('color','black')}
 //
 
 for (i=0;i<7;i++){
     for (j in daily_ev[i]){
-        ratio= Math.floor(100 / daily_ev[i].length)
+        ratio= Math.floor(90 / daily_ev[i].length)
         ratio_s=ratio.toString()+'%'
         X_offset=parseInt(j)*ratio.toString()+'%'
         for (even in daily_ev[i][j]){
             eventi=daily_ev[i][j][even]
-            loc='[id="'+wekk[i].id+' ' + eventi.start +'"]'
+            loc='[id="'+wekk[i].id+' ' + eventi.start.split(':')[0] +':00"]'
             //$(loc).addClass('position-relative')
             subId='Event-d-'+eventi.eventID.toString()
             $(loc).append('<div onclick="showEventW(this)" id='+subId+' class="position-absolute rounded text-truncate" style="z-index:10;opacity:0.85"></div>')
             $('#'+subId).css({'height':eventi.dur,'width':ratio_s,'left':X_offset,'background-color':eventi.color,'top':eventi.Y_offset+'px'})
             $('#'+subId).text(eventi.eventname)
-            $('#'+subId).tooltip( {title:eventi.start+" to "+eventi.endt+' '+eventi.eventname,trigger:'hover', placement: "bottom"})
+            $('#'+subId).tooltip( {title:eventi.start+" to "+eventi.endt+' '+eventi.eventname,trigger:'hover', placement: "bottom",delay: { "show": 100, "hide": 100 }})
         }
         
 
@@ -113,15 +119,10 @@ function showEventW(a){
 function clickOnCell(a){
 
     a=$(a).attr('id')
-    
     if(a.slice(0,10)!=bypass){
     dayEvents(a.slice(0,10),false,0);  $("#mdayEvent").modal()
-    bypass=''
     }
-
-    //alert(a.id.slice(0,10))//+" ,left= "+ $(a).offset().left+',top='+ $(a).offset().top)
-    //$('#viewz').css({'background-color':'red','width':'50px','height':'50px', 'z-index':'-100'})
-    
+    bypass=''
     
     }
     
