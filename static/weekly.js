@@ -21,9 +21,8 @@ $.post("/week_calendar",{'data': myJSON},function(resp){
     }
 //adjust the number of rows to show
 
-    m=$('[name="event"]').length
-    k=user.timeInterval
-    //n=7*24
+    m=$('[name="cell"]').length
+   
 
     //for(i=0 ; i<m-n ; i+=7){$('[name="row"]').eq(0).remove()}
     for(i=0 ; i<7*24-m ; i+=7){$('[name="row"]').eq(0).before($('[name="row"]').eq(0).clone())}   
@@ -35,7 +34,7 @@ $.post("/week_calendar",{'data': myJSON},function(resp){
         $('[name="timee"]').eq(i).text(timeHeader) 
         for (j=0;j<7;j++){
             
-            u=$('[name="event"]').eq(i*7+j); u.html('');u.attr('id', wekk[j].id+' '+timeHeader);
+            u=$('[name="cell"]').eq(i*7+j); u.html('');u.attr('id', wekk[j].id+' '+timeHeader);
 
         }
         

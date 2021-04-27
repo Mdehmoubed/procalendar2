@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block head %} {% endblock %}
+
+
+{% block content %}
+<script src="{{url_for('static', filename = 'yearly.js')}}"></script>
+<div id='yearlyView' class='px-4'>  
+    <div class="row text-center ">        
+        <div class="col-1 offset-2" ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
+        <div class="col-6 " id= 'cal_header' ><h2>March 2021</h2></div>        
+        <div class="col-1  " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
+    </div> 
+    <div style='position:relative; overflow-y: scroll; height: 80vh; overflow-x: hidden; padding-right: -10px;padding-top: 5px; '>
+    <div class="row row-cols " id='row1'>
+        <div class="col m-1 " name='month_c'>
+            <div class='row ' name='month_h'>
+                Jan              
+            </div>
+            <div class='row row-cols text-center ' name='week_days'>
+                <div name='week_head' class='col border  bg-success rounded p-0 text-truncate'>Sun</div>
+                <div name='week_head' class='col border  bg-success rounded p-0 text-truncate'>Mon</div>
+                <div name='week_head' class='col border  bg-success rounded p-0 text-truncate'>Tue</div>
+                <div name='week_head' class='col border  bg-success rounded p-0 text-truncate'>Wed</div>
+                <div name='week_head' class='col border  bg-success rounded p-0 text-truncate'>Thr</div>
+                <div name='week_head' class='col border  bg-success rounded p-0 text-truncate'>Fri</div>
+                <div name='week_head' class='col border  bg-success rounded p-0 text-truncate'>Sat</div>
+            </div>
+            <div class='row row-cols text-center' name='new_row'>
+                <div name='cell' class='col border rounded p-0' style='height:40px; font-size: 15px;'></div>
+                <div name='cell' class='col border rounded p-0' style='height:40px;font-size: 15px;'></div>
+                <div name='cell' class='col border rounded p-0' style='height:40px;font-size: 15px;'></div>
+                <div name='cell' class='col border rounded p-0' style='height:40px;font-size: 15px;'></div>
+                <div name='cell' class='col border rounded p-0' style='height:40px;font-size: 15px;'></div>
+                <div name='cell' class='col border rounded p-0' style='height:40px;font-size: 15px;'></div>
+                <div name='cell' class='col border rounded p-0' style='height:40px;font-size: 15px;'></div>        
+            </div>
+
+
+                            
+            
+
+
+        </div>
+        <div class="col m-1 " name='month_c'>
+            
+        </div>
+        <div class="col m-1" name='month_c'>
+            
+        </div>
+    </div>
+    <div class="row row-cols " id='row2'>
+        <div class="col m-1 " name='month_c'>
+
+        </div>
+        <div class="col m-1 " name='month_c'>
+            
+        </div>
+        <div class="col m-1 " name='month_c'>
+            
+        </div>        
+    </div>
+    <div class="row row-cols " id='row3'>
+        <div class="col m-1 " name='month_c'>
+
+        </div>
+        <div class="col m-1 " name='month_c'>
+            
+        </div>
+        <div class="col m-1 " name='month_c'>
+            
+        </div>        
+    </div>  
+    <div class="row row-cols " id='row4'>
+        <div class="col m-1 " name='month_c'>
+
+        </div>
+        <div class="col m-1 " name='month_c'>
+            
+        </div>
+        <div class="col m-1 " name='month_c'>
+            
+        </div>        
+    </div> 
+    </div> 
+         
+
+</div> 
+   
+
+{% endblock %}
+{% block footer %}
+
+{% endblock %}

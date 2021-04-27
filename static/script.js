@@ -40,9 +40,10 @@ function delGroup(e){m=e.parentElement.id.slice(6,)
     myJSON = JSON.stringify(send);
     $.post( "/edit_group", {'id': myJSON},function(data){view()})
 }
-function changroup(a){for (i in groups){
-   if(groups[i].groupID==$(a).val()){
-       $(a).css('background-color',groups[i].color)}
+function changroup(a){
+    for (i in groups){
+        if(groups[i].groupID==$(a).val()){
+            $(a).css('background-color',groups[i].color)}
 }}
 function changeshow(e){m=e.parentElement.id.slice(6,)
     showG=e.checked;
@@ -51,7 +52,8 @@ function changeshow(e){m=e.parentElement.id.slice(6,)
     $.post( "/edit_group", {'id': myJSON},function(data){view()})
 }
 
-function allDayChange(a){b=a.parentElement.parentElement
+function allDayChange(a){
+    b=a.parentElement.parentElement
     $(b).find('[id |="eventT"]').attr('hidden',a.checked)
     if (a.checked){
         $(b).find('[id |="end"]').val('23:59')
@@ -61,7 +63,8 @@ function allDayChange(a){b=a.parentElement.parentElement
     }       
 }
 
-function changeEnd(a){b=a.parentElement.parentElement
+function changeEnd(a){
+    b=a.parentElement.parentElement
     k=user.timeInterval          
     $(b).find('[id |="end"]').html(''); et1=$('#start').children().eq(0).clone()
     st= $(b).find('[id |="start"]').val()
@@ -285,8 +288,8 @@ function checkAll(){
 
 function viewCom(){
     //add listiner for each day 
-    $('.col.border.rounded').off()         
-    $('.col.border.rounded').click(function(){clickOnCell(this)})
+    $('[name="cell"]').off()         
+    $('[name="cell"]').click(function(){clickOnCell(this)})
       
 
      // making option for time slots

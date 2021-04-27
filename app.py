@@ -233,15 +233,53 @@ def dashboard():
     groups=cur.fetchall()
     con.close()
     #return render_template('indexi.html',user=user)
-    print(user['viewLy']+','+str(len(user['viewLy'])))
     if user['viewLy']=='   Week':       
         return render_template('weekly.html',user=user,groups=groups)
     if user['viewLy']=='   Month':
         return render_template('monthly.html',user=user,groups=groups)
     if user['viewLy']=='   Day':
-        return render_template('daily.html',user=user,groups=groups)        
+        return render_template('daily.html',user=user,groups=groups)  
+    if user['viewLy']=='  Year':
+        return render_template('yearly.html',user=user,groups=groups)      
     return render_template('monthly.html',user=user,groups=groups)
-   
+
+@app.route('/year_calendar',methods = ['POST','GET'])
+@is_logged_in
+def year_calendar():
+    month,year,dayToV,viewLy,timeInterval,firstDay=data_requst()
+    week_header,week_abbr,month_name,month_abbr,c = calendName(firstDay)
+    global user
+    #month_name, for month headers 
+    #week_abbr, for week days
+    a=c.yeardayscalendar(year,12)[0] 
+    m_index=1
+    cell_id=[]
+    for mon in a:
+        mon_id=[]
+        for week in mon:
+            week_id=[]
+            for day in week:
+                id=str(year)+'-'+str(m_index).zfill(2)+'-'+str(day).zfill(2)
+                if day==0 :
+                    id=''
+                week_id.append(id)
+            mon_id.append(week_id)
+        cell_id.append(mon_id)
+        m_index +=1
+    a=str(year)+'-01-01'
+    b=str(year+1)+'-01-01'
+    con=sql.connect("mdn1.db")
+    con.row_factory =dict_factory
+    cur=con.cursor()
+    cur.execute("select event.eventname ,groups.color, event.start,event.eventID,event.endt,event.date \
+        from event natural join groups where groups.showG=1 and event.date <? and \
+        event.date >? and  event.username=? order by event.date ,event.start",(b,a,session['username']))
+    day_event=cur.fetchall()
+    con.close() 
+    data={'month_name':month_name,'week_header':week_abbr,'user':user,\
+    'cell_id':cell_id,'day_event':day_event,'groups':groups}
+    return {'data':data}
+
 
 
 ## month calendar MVC 
@@ -281,8 +319,8 @@ def month_calendar():
         from event natural join groups where groups.showG=1 and \
             event.date =? and event.username=? order by event.start",(day_id,uname))
         day_event.append(cur.fetchall())
-    con.close()  
-    #print (day_event)
+    con.close() 
+    
     data={'month_header':month_header,'week_header':week_header,'user':user,\
     'day_header':day_header,'day_event':day_event,'groups':groups}
     return {'data':data}
@@ -320,7 +358,6 @@ def week_calendar():
     for j in wekk:       
         aDay=daily_sort(j['id'],uname,cur)
         daily_ev.append(aDay)
-    print(daily_ev)
     con.close()  
     data = {'head_cal_week':head_cal_week,'wekk':wekk,'user':user,'daily_ev':daily_ev,'groups':groups}
     return {'data':data}
@@ -341,7 +378,6 @@ def day_calendar():
             t1= datetime(2020,2,2,0,0)   
             day_data['aDay']=daily_sort(day_data['id'],uname,cur)    
             break
-    print(day_data) 
     con.close
     data = {'day_data':day_data,'user':user,'groups':groups}
     return {'data':data}
@@ -357,7 +393,7 @@ def data_requst():
     return month,year,dayToV,viewLy,timeInterval,firstDay
 
 def calendName(firstDay):
-    week_name={0:'Monday',1:'Tuesday',2:'Wednesday',3:'Thursday',4:'Friday',5:'Saturday',6:'Sunday'}
+# month name
     month_name=[]
     for i in calendar_9.month_name:
         month_name.append(i)
@@ -365,16 +401,22 @@ def calendName(firstDay):
     month_abbr=[]
     for i in calendar_9.month_abbr:
         month_abbr.append(i)
+# week name
+    week_name=[]
+    for i in calendar_9.day_name:
+        week_name.append(i)
+# week abbr
+    week_a=[]
+    for i in calendar_9.day_abbr:
+        week_a.append(i)
 #this is first day of week 0=monday 6=sunday 5=saturday 
     c=calendar_9.Calendar(firstweekday=firstDay)
 #make proper week header (to make a list)
     week_header=[]
-    for i in c.iterweekdays():
-        week_header.append(week_name[i]) 
-#make week abbr
     week_abbr=[]
-    for i in calendar_9.day_abbr:
-        week_abbr.append(i) 
+    for i in c.iterweekdays():
+        week_header.append(week_name[i])
+        week_abbr.append(week_a[i]) #make week abbr
     return week_header,week_abbr,month_name,month_abbr,c
 
 

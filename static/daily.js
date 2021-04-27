@@ -40,7 +40,7 @@ $(ss1).append('<div id="currentTime-0" style="z-index:14;background-color:blue;p
 $(ss1).append('<div style="z-index:14;background-color:blue;position:relative;height:6px ;top:'+(b-5)+'px; width:6px;left:-4px"></div>')
 
 //$('[id ="currentTime-0"]').blink()
-elementToView=document.getElementById(day+' '+timeid)
+elementToView=document.getElementsByName('timee')[a]
 if (elementToView!==null){elementToView.scrollIntoView();$('[name="timee"]').eq(a).css('color','blue')}
 else{$('[name="timee"]').eq(a).css('color','black')}
 //
@@ -61,6 +61,7 @@ for (stage in daily_ev){
         $('#'+subId).tooltip( {title:eventi.start+" to "+eventi.endt+' '+eventi.eventname,trigger:'hover', placement: "bottom",delay: { "show": 100, "hide": 100 }})
     }
 }
+showEList.sort((a,b)=>(a.start<b.start)? 1:(a.start==b.start)?((a.endt<b.endt)? 1:-1):-1)
 $('[name="eventlist"]').eq(0).show()
 a=$('[name="eventlist"]').eq(0).clone()
 
@@ -72,8 +73,10 @@ else{$('[name="eventlist"]').hide()}
 
 
 for (i in showEList){
-    $('#listCon').after(a.clone())
     item=showEList[i]
+    a.attr('id',item.eventID)
+    $('#listCon').after(a.clone())
+    
     $('[name="groList"]').eq(0).text(item.name)
     $('[name="groList"]').eq(0).css('background-color',item.color) 
     $('[name="titleL"]').eq(0).text(": "+item.eventname)
@@ -118,7 +121,12 @@ bypass=$(a).parent().attr('id').slice(0,10)
 //alert(bypass)
 dayEvents(bypass,true,a.id.slice(8,))
 $("#mdayEvent").modal()
-}    
+}   
+
+function showEventD(a){
+    dayEvents(day_id,true,a.id)
+    $("#mdayEvent").modal()    
+}
 
 
 function clickOnCell(a){
