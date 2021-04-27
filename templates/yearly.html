@@ -5,13 +5,13 @@
 
 {% block content %}
 <script src="{{url_for('static', filename = 'yearly.js')}}"></script>
-<div id='yearlyView' class='px-4'>  
+<div id='yearlyView' class='px-1'>  
     <div class="row text-center ">        
         <div class="col-1 offset-2" ><h1 id='backward'><i class="fas fa-arrow-down"></i></h1></div>
         <div class="col-6 " id= 'cal_header' ><h2>March 2021</h2></div>        
         <div class="col-1  " ><h1 id='forward'><i class="fas fa-arrow-up" ></i></h1></div>
     </div> 
-    <div style='position:relative; overflow-y: scroll; height: 80vh; overflow-x: hidden; padding-right: -10px;padding-top: 5px; '>
+    <div style='position:relative; overflow-y: scroll; height: 80vh; overflow-x: hidden; padding-right: 10px ;padding-left:15px;padding-top: 5px; '>
     <div class="row row-cols " id='row1'>
         <div class="col m-1 " name='month_c'>
             <div class='row ' name='month_h'>
@@ -81,8 +81,9 @@
         <div class="col m-1 " name='month_c'>
             
         </div>        
+    
     </div> 
-    </div> 
+    </div>
          
 
 </div> 

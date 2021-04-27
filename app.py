@@ -248,6 +248,7 @@ def dashboard():
 def year_calendar():
     month,year,dayToV,viewLy,timeInterval,firstDay=data_requst()
     week_header,week_abbr,month_name,month_abbr,c = calendName(firstDay)
+    print(week_abbr)
     global user
     #month_name, for month headers 
     #week_abbr, for week days
@@ -341,7 +342,7 @@ def week_calendar():
     for i in c.itermonthdays4(year,month):
         if(st<=0 and st>-7):
             hd=month_abbr[i[1]]+' '+str(i[2])
-            wekk.append({'week_head':hd,'id':date(i[0],i[1],i[2]).strftime('%Y-%m-%d'),'weekS':week_abbr[i[3]]+' '+hd})
+            wekk.append({'week_head':hd,'id':date(i[0],i[1],i[2]).strftime('%Y-%m-%d'),'weekS':week_abbr[i[3]-firstDay]+' '+hd})
         st-=1
    
     if wekk[0]['week_head'].split(' ')[0]==wekk[-1]['week_head'].split(' ')[0]:
@@ -373,7 +374,7 @@ def day_calendar():
     uname=session['username']     
     for i in c.itermonthdays4(year,month):
         if (i[1]==month and i[2]==dayToV):
-            cal_header= week_header[i[3]]+', '+month_name[i[1]]+' '+str(i[2])+', '+str(year)
+            cal_header= week_header[i[3]-firstDay]+', '+month_name[i[1]]+' '+str(i[2])+', '+str(year)
             day_data={'cal_header':cal_header,'id':date(i[0],i[1],i[2]).strftime('%Y-%m-%d')}
             t1= datetime(2020,2,2,0,0)   
             day_data['aDay']=daily_sort(day_data['id'],uname,cur)    

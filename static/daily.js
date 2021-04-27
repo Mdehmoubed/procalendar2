@@ -13,7 +13,7 @@ $('#cal_header').html('<h2>'+head_cal+'</h2>')
 
 //adjust the number of rows to show
 
-m=$('[name="event"]').length
+m=$('[name="cell"]').length
 k=user.timeInterval
 //n=7*24
 
@@ -26,7 +26,7 @@ for (i=0;i<24;i++){
     timeHeader=i.toString().padStart(2,'0')+':00'
     $('[name="timee"]').eq(i).text(timeHeader)             
         
-    u=$('[name="event"]').eq(i); u.html('');u.attr('id', day_id+' '+timeHeader);
+    u=$('[name="cell"]').eq(i); u.html('');u.attr('id', day_id+' '+timeHeader);
    
 }
 

@@ -28,13 +28,13 @@ function view(){
             for(d of w){
                 if (d==''){
                     text='' 
-                    a.find('[name|="cell"]').eq(i).attr('name','cell-1')                  
+                    a.find('[name |= "cell"]').eq(i).attr('name','cell-B')                  
                 }
                 else{
                     text=parseInt(d.split('-')[2]).toString()
-                    a.find('[name|="cell"]').eq(i).attr('id',d)                    
+                    a.find('[name |= "cell"]').eq(i).attr({'id':d,'name':'cell'})                    
                 }
-                a.find('[name|="cell"]').eq(i).html("<div style='height:20px' class='p-0'>"+text+
+                a.find('[name |= "cell"]').eq(i).html("<div style='height:20px' class='p-0'>"+text+
                 "</div><div style='height:20px ;  display:flex;justify-content:space-between;' name='event'  class='p-0'></div>")
                 i++
             }
