@@ -274,7 +274,7 @@ def year_calendar():
     cur=con.cursor()
     cur.execute("select event.eventname ,groups.color, event.start,event.eventID,event.endt,event.date \
         from event natural join groups where groups.showG=1 and event.date <? and \
-        event.date >? and  event.username=? order by event.date ,event.start",(b,a,session['username']))
+        event.date >=? and  event.username=? order by event.date ,event.start",(b,a,session['username']))
     day_event=cur.fetchall()
     con.close() 
     data={'month_name':month_name,'week_header':week_abbr,'user':user,\
