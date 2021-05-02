@@ -7,8 +7,7 @@ var month=today.getMonth();
 var year=today.getFullYear();
 var dayToV=today.getDate();
 var bypass=''
-$("#userShow").text(user.fname)
-                
+$("#userShow").text(user.fname)                
  
 $("[name='first_day']").click(function() {fd=parseInt(($(this).val()));user.firstDay=fd; setUser()})
 $("[name='timeInt']").click(function() {ti=parseInt($(this).val());user.timeInterval=ti; setUser()}) 
@@ -278,7 +277,7 @@ function editGroup(e){
         var send={'st':'editGr','name':gname , 'color':gcolor,'groupID':groupID }
         for (i in groups){
             if (groups[i].groupID==groupID ){
-                groups[i].color=color
+                groups[i].color=gcolor
                 groups[i].name=gname
             break;
             }
