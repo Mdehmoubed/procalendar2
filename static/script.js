@@ -9,9 +9,9 @@ var dayToV=today.getDate();
 var bypass=''
 $("#userShow").text(user.fname)
                 
-$("[name='first_day']").click(function() {fd=parseInt(($(this).val()));user.firstDay=fd; setUser()});
-$("[name='timeInt']").click(function() {ti=parseInt($(this).val());user.timeInterval=ti;  setUser()});
-
+ 
+$("[name='first_day']").click(function() {fd=parseInt(($(this).val()));user.firstDay=fd; setUser()})
+$("[name='timeInt']").click(function() {ti=parseInt($(this).val());user.timeInterval=ti; setUser()}) 
 $(document).ready(function(){           
     $("#backward").click(function(){back()}) ,
     $("#forward").click(function(){forward()}) ,
@@ -24,21 +24,36 @@ $(document).ready(function(){
         $('[id |="eventT"]').attr('hidden',false);$('#m_add_event').modal();}) ,
     $("#AccountChange").click(function(){edit_user()}),
     //$("#allDay").change(function(){$('[id |="eventT"]').attr('hidden',this.checked)}) ,
-    $('#adE').click(function(){addEventByD(this)}) ,  
-            
+    $('#adE').click(function(){addEventByD(this)}) , 
+    
+    a='#startWeek > #startWeek'+user.firstDay.toString() 
+    $(a).prop('checked',true);
+    
+    a='#timeSlot > #t'+user.timeInterval.toString() 
+    $(a).prop('checked',true);              
     view()
 
 })
 function setUser(){
     var send={'st':'save_user','user':user}
     myJSON = JSON.stringify(send);
-    $.post( "/edit_group", {'id': myJSON},function(data){view()})
-    
+    $.post( "/edit_group", {'id': myJSON},function(data){})
+    view()
 } 
 function delGroup(e){m=e.parentElement.id.slice(6,)
     var send={'st':'delGr','id':m }
+    
+    for (i in groups){
+            if (groups[i].groupID==m ){
+                groups.splice(parseInt(i),1)
+            break;
+        }
+    }
+   
     myJSON = JSON.stringify(send);
-    $.post( "/edit_group", {'id': myJSON},function(data){view()})
+    $.post( "/edit_group", {'id': myJSON},function(data){})
+    view()
+
 }
 function changroup(a){
     for (i in groups){
@@ -48,8 +63,16 @@ function changroup(a){
 function changeshow(e){m=e.parentElement.id.slice(6,)
     showG=e.checked;
     var send={'st':'showChange','id':m ,'showG':showG }
+    for (i in groups){
+        if (groups[i].groupID==m ){
+            groups[i].showG=showG
+        break;
+    }
+    }
+
     myJSON = JSON.stringify(send);
-    $.post( "/edit_group", {'id': myJSON},function(data){view()})
+    $.post( "/edit_group", {'id': myJSON},function(data){})
+    view()
 }
 
 function allDayChange(a){
@@ -225,6 +248,7 @@ function addGroup(){
         var send={'st':'addGr','name':gname , 'color':gcolor }
         myJSON = JSON.stringify(send);
         $.post( "/edit_group", {'id': myJSON},function(data){ 
+            groups=data.resp.groups            
             addGrCancel(); view()
             })
     }
@@ -252,13 +276,23 @@ function editGroup(e){
         gcolor=$(m+'>[name="g-pr-color"]').val()
         groupID=e.parentElement.id.slice(6,)               
         var send={'st':'editGr','name':gname , 'color':gcolor,'groupID':groupID }
+        for (i in groups){
+            if (groups[i].groupID==groupID ){
+                groups[i].color=color
+                groups[i].name=gname
+            break;
+            }
+        }
+        $(eb).html('<i class="fas fa-edit"></i>')
+        $(m).children().attr('disabled',false)
+        $(m +'>[name |="g-pr"]').attr('disabled',true)
+        eb.html('<i class="fas fa-edit"></i>')     
+        addGrCancel()
+
         myJSON = JSON.stringify(send);  
         $.post( "/edit_group", {'id': myJSON},function(){
-            $(eb).html('<i class="fas fa-edit"></i>')
-            $(m).children().attr('disabled',false)
-            $(m +'>[name |="g-pr"]').attr('disabled',true)
-            eb.html('<i class="fas fa-edit"></i>')     
-            addGrCancel();view()  })
+         })
+         view() 
     }       
     return
 }
@@ -311,10 +345,7 @@ function viewCom(){
         ind.append(e.clone())
         }
 
-    a='#startWeek > #startWeek'+user.firstDay.toString() 
-    $(a).prop('checked',true);
-    a='#timeSlot > #t'+user.timeInterval.toString() 
-    $(a).prop('checked',true);
+    
 
     //making group for list to add event and group-menu    
     e=$('[id|="group"]').eq(0);  m=$('[id|="grList"]').eq(0); 

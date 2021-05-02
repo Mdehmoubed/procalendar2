@@ -547,7 +547,8 @@ def edit_group():
     global groups
     groups =cur.fetchall()
     con.close()
-    return 'ok'
+    data={'groups':groups}
+    return {'resp':data}
 
 
 def add_sch(events,user):

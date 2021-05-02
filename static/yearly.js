@@ -3,8 +3,8 @@ function view(){
     var data={'viewLy':user.viewLy,'firstDay':user.firstDay,'timeInterval':user.timeInterval,'dayToV':dayToV,'month':month+1 , 'year':year}
     myJSON = JSON.stringify(data);
     $.post("/year_calendar",{'data': myJSON},function(resp){
-    user=resp.data.user
-    groups=resp.data.groups
+    //user=resp.data.user
+    //groups=resp.data.groups
     month_name=resp.data.month_name
     week_header=resp.data.week_header
     cell_id=resp.data.cell_id

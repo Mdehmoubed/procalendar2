@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <script> 
     user={{user|tojson}}
-    groups={{groups|tojson}}             
+    groups={{groups|tojson}} 
+             
     </script> 
     <title>
         PROCalendar
@@ -295,7 +296,7 @@
 </body>
 </html>
 
- <script src="{{url_for('static', filename = 'script.js')}}"></script>
+<script src="{{url_for('static', filename = 'script.js')}}"></script>   
 
 {% block footer %}
 {% endblock %}

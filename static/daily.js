@@ -4,8 +4,8 @@ function view(){
         myJSON = JSON.stringify(data);
 
 $.post("/day_calendar",{'data': myJSON},function(resp){
-user=resp.data.user
-groups=resp.data.groups
+//user=resp.data.user
+//groups=resp.data.groups
 head_cal=resp.data.day_data.cal_header
 day_id=resp.data.day_data.id
 daily_ev=resp.data.day_data.aDay
